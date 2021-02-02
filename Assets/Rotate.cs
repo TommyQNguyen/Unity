@@ -22,6 +22,6 @@ public class Rotate : MonoBehaviour
         // delta = 0.02
         transform.rotation *= Quaternion.Euler(0, Speed * Time.deltaTime, 0);
 
-    
+        new Vector3().ToQuaternion();
     }
 }

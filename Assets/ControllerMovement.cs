@@ -21,8 +21,10 @@ public class ControllerMovement : MonoBehaviour
         var horizontal = Input.GetAxisRaw("Horizontal");
         var vertical = Input.GetAxisRaw("Vertical");
 
+        // Etape pour empecher le joueur d'aller en diagonale trop vite
         var direction = new Vector3(horizontal, vertical, 0).normalized;
-
+        // Si le joueur avance en diagonale avec un vecteur de plus que 1,
+        // le ramener a une vitesse normale
         if (direction.magnitude > 1)
         {
             direction = direction.normalized;
