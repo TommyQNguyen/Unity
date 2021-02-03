@@ -6,6 +6,7 @@ public class Monster : MonoBehaviour
 {
     public GameObject Player;
     public float Speed = 10;
+    public int Health = 3;
 
     // Update is called once per frame
     void Update()
@@ -16,5 +17,6 @@ public class Monster : MonoBehaviour
 
         // A changer 3e argument, pour que le monstre regarde vers le joueur
         // transform.LookAt(Player.transform.position, Vector3);
+        transform.right = Player.transform.position - transform.position;
     }
 }
