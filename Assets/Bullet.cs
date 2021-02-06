@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
 {
     public float DestroyTimer = 5;
     public float Speed = 5;
+    public GameObject Explosion; // Drag my Explosion prefab in Unity
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +32,10 @@ public class Bullet : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision2D)
     {
         Destroy(gameObject);
+
+        // Creer une explosion, a sa transform.position?, 
+        // Quaternion.identity: https://docs.unity3d.com/ScriptReference/Quaternion-identity.html
+        Instantiate(Explosion, transform.position, Quaternion.identity);
     }
 
 

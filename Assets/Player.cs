@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public GameObject Bullet;
+    public GameObject Bullet; // Drag my Explosion prefab in Unity
     public Transform BulletSpawnPoint;
 
     

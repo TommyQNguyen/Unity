@@ -19,4 +19,19 @@ public class Monster : MonoBehaviour
         // transform.LookAt(Player.transform.position, Vector3);
         transform.right = Player.transform.position - transform.position;
     }
+
+    void OnCollisionEnter2D(Collision2D collision2D)
+    {
+
+        Health = Health - 1;
+
+        if (Health < 1)
+        {
+            Debug.Log("Enemy is dead");
+            Destroy(gameObject);
+        }
+
+        
+        Debug.Log("Health: " + Health);
+    }
 }
