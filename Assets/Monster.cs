@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
-    public GameObject Player;
+
     public float Speed = 10;
     public int Health = 3;
+
+    private GameObject Player;
+
+    private void Start()
+    {
+        //Player player = FindObjectOfType<Player>();
+        //player.gameObject
+        Player = FindObjectOfType<Player>().gameObject;
+
+    }
 
     // Update is called once per frame
     void Update()
@@ -14,15 +24,14 @@ public class Monster : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, 
             Player.transform.position, 
             Speed * Time.deltaTime);
-
+        //gameObject
         // A changer 3e argument, pour que le monstre regarde vers le joueur
         // transform.LookAt(Player.transform.position, Vector3);
         transform.right = Player.transform.position - transform.position;
     }
 
-    void OnCollisionEnter2D(Collision2D collision2D)
+    public void onBulletCollision(Bullet bullet)
     {
-
         Health = Health - 1;
 
         if (Health < 1)
@@ -31,7 +40,7 @@ public class Monster : MonoBehaviour
             Destroy(gameObject);
         }
 
-        
+
         Debug.Log("Health: " + Health);
     }
 }

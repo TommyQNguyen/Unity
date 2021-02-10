@@ -29,13 +29,26 @@ public class Bullet : MonoBehaviour
     }
 
     // Also add Capsule Collider 2D for the items that will collide
-    void OnCollisionEnter2D(Collision2D collision2D)
+    void OnTriggerEnter2D(Collider2D collision2D)
     {
-        Destroy(gameObject);
+
+
+        //Destroy(gameObject);
 
         // Creer une explosion, a sa transform.position?, 
         // Quaternion.identity: https://docs.unity3d.com/ScriptReference/Quaternion-identity.html
-        Instantiate(Explosion, transform.position, Quaternion.identity);
+        //Instantiate(Explosion, transform.position, Quaternion.identity);
+
+        Debug.Log("Bullet : On trigger");
+
+         // Teacher version:
+         var monster = collision2D.gameObject.GetComponent<Monster>();
+         if (monster != null)
+         {
+           monster.onBulletCollision(this);
+           Instantiate(Explosion, transform.position, Quaternion.identity);
+           Destroy(gameObject);
+         }
     }
 
 
