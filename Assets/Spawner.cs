@@ -7,6 +7,13 @@ public class Spawner : MonoBehaviour
 
     public GameObject Monster;
     public float InstantiateTimer = 5;
+    public Health Health { get; private set; }
+
+
+    public void Awake()
+    {
+        Health = GetComponent<Health>(); 
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -26,5 +33,20 @@ public class Spawner : MonoBehaviour
             Instantiate(Monster, transform.position, Quaternion.identity);
             InstantiateTimer = 5;
         }
+    }
+
+    public void onBulletCollision(Bullet bullet)
+    {
+        Health.SpawnerHealthQuantity = Health.SpawnerHealthQuantity - 1;
+
+        if (Health.SpawnerHealthQuantity < 1)
+        {
+            Debug.Log("Enemy is dead");
+            Destroy(gameObject);
+        }
+
+        Debug.Log("Spawner Health: " + Health.SpawnerHealthQuantity);
+
+
     }
 }

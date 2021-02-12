@@ -32,12 +32,8 @@ public class Bullet : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision2D)
     {
 
-
-        //Destroy(gameObject);
-
         // Creer une explosion, a sa transform.position?, 
         // Quaternion.identity: https://docs.unity3d.com/ScriptReference/Quaternion-identity.html
-        //Instantiate(Explosion, transform.position, Quaternion.identity);
 
         Debug.Log("Bullet : On trigger");
 
@@ -47,9 +43,28 @@ public class Bullet : MonoBehaviour
          {
            monster.onBulletCollision(this);
            Instantiate(Explosion, transform.position, Quaternion.identity);
-           Destroy(gameObject);
+           //Destroy(gameObject); // C'est probablement repetitif etant donne que 
+           // la methode .onBulletCollision le fait deja
          }
+
+        var spawner = collision2D.gameObject.GetComponent<Spawner>();
+        if (spawner != null)
+        {
+            spawner.onBulletCollision(this);
+            Instantiate(Explosion, transform.position, Quaternion.identity);
+            //Destroy(gameObject);
+        }
+
+
+        var barrel = collision2D.gameObject.GetComponent<Barrel>();
+        if (barrel != null)
+        {
+            barrel.onBulletCollision(this);
+            Instantiate(Explosion, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
+
+
+
     }
-
-
 }

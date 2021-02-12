@@ -73,10 +73,10 @@ public class Player : MonoBehaviour
         
         if (enemy != null && isInvincible == false)
         {
-            Health.Quantity = Health.Quantity - 1;
+            Health.PlayerHealthQuantity = Health.PlayerHealthQuantity - 1;
             Flash.StartFlash();
 
-            Debug.Log("Player Health: " + Health.Quantity);
+            Debug.Log("Player Health: " + Health.PlayerHealthQuantity);
         }
     }
 }

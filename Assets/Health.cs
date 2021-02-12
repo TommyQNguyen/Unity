@@ -5,7 +5,9 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
 
-    public int Quantity = 5;
+    public int PlayerHealthQuantity = 5;
+    public int SpawnerHealthQuantity = 20;
+    public int BarrelHealthQuantity = 2;
     // Start is called before the first frame update
     void Start()
     {
