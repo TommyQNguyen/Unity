@@ -31,14 +31,14 @@ public class Barrel : MonoBehaviour
                 Instantiate(Explosion, transform.position, Quaternion.identity);
 
                 // A le rendre plus optimal quand j'aurai fini les autres taches... 
-                var bulletRotation1 = transform.rotation * Quaternion.Euler(0, 0, 0);       // Se dirige tout droit
-                var bulletRotation2 = transform.rotation * Quaternion.Euler(45, 0, -45);  // Se dirige en diagonale en haut
-                var bulletRotation3 = transform.rotation * Quaternion.Euler(90, 0, -90);    // Se dirige en diagonale en bas
-                var bulletRotation4 = transform.rotation * Quaternion.Euler(135, 0, -135);       // Se dirige tout droit
-                var bulletRotation5 = transform.rotation * Quaternion.Euler(180, 0, -180);  // Se dirige en diagonale en haut
-                var bulletRotation6 = transform.rotation * Quaternion.Euler(225, 0, -225);    // Se dirige en diagonale en bas
-                var bulletRotation7 = transform.rotation * Quaternion.Euler(270, 0, -270);       // Se dirige tout droit
-                var bulletRotation8 = transform.rotation * Quaternion.Euler(315, 0, -315);  // Se dirige en diagonale en haut
+                var bulletRotation1 = transform.rotation * Quaternion.Euler(0, 0, 0);       
+                var bulletRotation2 = transform.rotation * Quaternion.Euler(45, 0, -45);  
+                var bulletRotation3 = transform.rotation * Quaternion.Euler(90, 0, -90);    
+                var bulletRotation4 = transform.rotation * Quaternion.Euler(135, 0, -135);       
+                var bulletRotation5 = transform.rotation * Quaternion.Euler(180, 0, -180);  
+                var bulletRotation6 = transform.rotation * Quaternion.Euler(225, 0, -225);    
+                var bulletRotation7 = transform.rotation * Quaternion.Euler(270, 0, -270);       
+                var bulletRotation8 = transform.rotation * Quaternion.Euler(315, 0, -315);  
 
                 // Shoot les bullets partout sur explosion
                 Instantiate(Bullet, transform.position, bulletRotation1);
@@ -69,14 +69,14 @@ public class Barrel : MonoBehaviour
             Destroy(gameObject);
             Instantiate(Explosion, transform.position, Quaternion.identity);
 
-            var bulletRotation1 = transform.rotation * Quaternion.Euler(0, 0, 0);       // Se dirige tout droit
-            var bulletRotation2 = transform.rotation * Quaternion.Euler(45, 0, -45);  // Se dirige en diagonale en haut
-            var bulletRotation3 = transform.rotation * Quaternion.Euler(90, 0, -90);    // Se dirige en diagonale en bas
-            var bulletRotation4 = transform.rotation * Quaternion.Euler(135, 0, -135);       // Se dirige tout droit
-            var bulletRotation5 = transform.rotation * Quaternion.Euler(180, 0, -180);  // Se dirige en diagonale en haut
-            var bulletRotation6 = transform.rotation * Quaternion.Euler(225, 0, -225);    // Se dirige en diagonale en bas
-            var bulletRotation7 = transform.rotation * Quaternion.Euler(270, 0, -270);       // Se dirige tout droit
-            var bulletRotation8 = transform.rotation * Quaternion.Euler(315, 0, -315);  // Se dirige en diagonale en haut
+            var bulletRotation1 = transform.rotation * Quaternion.Euler(0, 0, 0);       
+            var bulletRotation2 = transform.rotation * Quaternion.Euler(45, 0, -45);  
+            var bulletRotation3 = transform.rotation * Quaternion.Euler(90, 0, -90);    
+            var bulletRotation4 = transform.rotation * Quaternion.Euler(135, 0, -135);       
+            var bulletRotation5 = transform.rotation * Quaternion.Euler(180, 0, -180);  
+            var bulletRotation6 = transform.rotation * Quaternion.Euler(225, 0, -225);    
+            var bulletRotation7 = transform.rotation * Quaternion.Euler(270, 0, -270);       
+            var bulletRotation8 = transform.rotation * Quaternion.Euler(315, 0, -315);
 
             // Shoot les bullets partout sur explosion
             Instantiate(Bullet, transform.position, bulletRotation1);

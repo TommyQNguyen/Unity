@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerHud : MonoBehaviour
 {
+    private GameObject Player;
     public Text PlayerHealthText;
     public Image PlayerHealthImage;
     public Health Health { get; private set; }
@@ -12,6 +13,14 @@ public class PlayerHud : MonoBehaviour
     public void Awake()
     {
         Health = GetComponent<Health>(); 
+    }
+
+    private void Start()
+    {
+        //Player player = FindObjectOfType<Player>();
+        //player.gameObject
+        Player = FindObjectOfType<Player>().gameObject;
+
     }
 
     // Update is called once per frame

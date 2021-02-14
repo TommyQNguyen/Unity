@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public GameObject Bullet; // Drag my Explosion prefab in Unity
     public Transform BulletSpawnPoint;
+    public GameObject Bullet; // Drag my Explosion prefab in Unity
+    public GameObject Bomb;
     public Health Health { get; private set; } // Une property en C#
     public Flash Flash { get; private set; }
     private bool isInvincible = false;
@@ -50,6 +51,14 @@ public class Player : MonoBehaviour
             Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation1);
             Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation2);
             Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation3);
+        }
+        if (Input.GetButtonDown("Fire3"))
+        {
+            //var bulletRotation = transform.rotation * Quaternion.Euler(0, 0, 0);
+
+            Instantiate(Bomb, transform.position, Quaternion.identity);
+
+            Debug.Log("BOMB input");
         }
 
         if (Flash.enabled)
