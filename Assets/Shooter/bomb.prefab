@@ -128,7 +128,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BombTimer: 1
+  BombExplodeTimer: 2
   BulletGameObject: {fileID: 1097704576117470891, guid: 8c42e381fe7394a498bcfb2e29d4410d,
     type: 3}
   ExplosionGameObject: {fileID: 5899371824983041942, guid: 88c8de09987b0504ba7d9d7bb1643689,
     type: 3}
+  BombExplodesSound: {fileID: 8300000, guid: a0cd19b8acf5a4540948be99499c559a, type: 3}

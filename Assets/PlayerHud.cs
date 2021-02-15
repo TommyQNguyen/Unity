@@ -10,24 +10,22 @@ public class PlayerHud : MonoBehaviour
     public Image PlayerHealthImage;
     public Text PlayerBombText;
     public Image PlayerBombImage;
-
-    public void Awake()
-    {
-        //Health = GetComponent<Health>(); 
-    }
+    public Text PlayerScoreText;
+    public Text GameOverText;
 
     private void Start()
     {
-        //player.gameObject
-
-        // Va chercher le player
         Player = FindObjectOfType<Player>();
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Player.Health.PlayerHealthQuantity < 1)
+        {
+            GameOverText.text = "Game Over";
+            //Debug.Log("Game Over!");
+        }
         
         PlayerHealthText.text = Player.Health.PlayerHealthQuantity.ToString();
         //PlayerHealthText.text = "Bonjour";
@@ -37,5 +35,6 @@ public class PlayerHud : MonoBehaviour
         PlayerBombText.text = "x " + Player.Items.BombQuantity;
         //PlayerBombText.color = PlayerBombText.color.WithAlpha(0.7f);
         //PlayerBombImage.color = PlayerBombImage.color.WithAlpha(0.7f);
+        PlayerScoreText.text = Player.Score.ScoreNumber.ToString();
     }
 }

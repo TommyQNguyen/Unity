@@ -95,10 +95,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be3b4bc78ed8bb4daa8dce84db55100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 0}
   DestroyTimer: 5
   Speed: 5
   Explosion: {fileID: 5899371824983041942, guid: 88c8de09987b0504ba7d9d7bb1643689,
     type: 3}
+  BulletHitSound: {fileID: 8300000, guid: fa8616bb0e9ed1145a2774fae585b985, type: 3}
 --- !u!70 &-6299874450397134764
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

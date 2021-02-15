@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public Player Player;
     public float DestroyTimer = 5;
     public float Speed = 5;
     public GameObject Explosion; // Drag my Explosion prefab in Unity
+    public AudioClip BulletHitSound;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Player = FindObjectOfType<Player>();
     }
 
     // Update is called once per frame
@@ -41,18 +43,22 @@ public class Bullet : MonoBehaviour
          var monster = collision2D.gameObject.GetComponent<Monster>();
          if (monster != null)
          {
-           monster.onBulletCollision(this);
-           Instantiate(Explosion, transform.position, Quaternion.identity);
-           //Destroy(gameObject); // C'est probablement repetitif etant donne que 
-           // la methode .onBulletCollision le fait deja
-         }
+            monster.onBulletCollision(this);
+            Instantiate(Explosion, transform.position, Quaternion.identity);
+            Player.Score.ScoreNumber = Player.Score.ScoreNumber + 25;
+            //Destroy(gameObject); // C'est probablement repetitif etant donne que 
+            // la methode .onBulletCollision le fait deja
+            AudioSource.PlayClipAtPoint(BulletHitSound, transform.position, 1.0f);
+        }
 
         var spawner = collision2D.gameObject.GetComponent<Spawner>();
         if (spawner != null)
         {
             spawner.onBulletCollision(this);
             Instantiate(Explosion, transform.position, Quaternion.identity);
-            //Destroy(gameObject);
+            Player.Score.ScoreNumber = Player.Score.ScoreNumber + 25;
+
+            AudioSource.PlayClipAtPoint(BulletHitSound, transform.position, 1.0f);
         }
 
 
@@ -61,7 +67,9 @@ public class Bullet : MonoBehaviour
         {
             barrel.onBulletCollision(this);
             Instantiate(Explosion, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            //Destroy(gameObject);
+
+            AudioSource.PlayClipAtPoint(BulletHitSound, transform.position, 1.0f);
         }
 
 

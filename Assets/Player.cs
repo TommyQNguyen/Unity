@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    
     public Transform BulletSpawnPoint;
     public GameObject Bullet; // Drag my Explosion prefab in Unity
     public GameObject Bomb;
     public Health Health { get; private set; } // Une property en C#
     public Items Items { get; private set; }
+    public Score Score { get; private set; }
     public Flash Flash { get; private set; }
     private bool isInvincible = false;
+
+    public AudioClip PistolSound;
+    public AudioClip ShotgunSound;
+    public AudioClip PlayerHurtSound;
+    public AudioClip PlayerExplodesSound;
 
 
 
@@ -30,6 +37,7 @@ public class Player : MonoBehaviour
         Health = GetComponent<Health>(); // Chercher l'instance dans le GameObject
         Flash = GetComponent<Flash>();
         Items = GetComponent<Items>();
+        Score = GetComponent<Score>();
     }
 
     // Update is called once per frame
@@ -38,8 +46,9 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             var bulletRotation = transform.rotation * Quaternion.Euler(0, 0, 0);
-
             Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation);
+
+            AudioSource.PlayClipAtPoint(PistolSound, transform.position, 1.0f);
         }
 
         if (Input.GetButtonDown("Fire2"))
@@ -53,6 +62,8 @@ public class Player : MonoBehaviour
             Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation1);
             Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation2);
             Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation3);
+
+            AudioSource.PlayClipAtPoint(ShotgunSound, transform.position, 1.0f);
         }
         if (Input.GetButtonDown("Fire3"))
         {
@@ -84,10 +95,19 @@ public class Player : MonoBehaviour
         
         if (enemy != null && isInvincible == false)
         {
+            if (Health.PlayerHealthQuantity < 1)
+            {
+                Destroy(gameObject);
+                AudioSource.PlayClipAtPoint(PlayerExplodesSound, transform.position, 1.0f);
+            }
+
             Health.PlayerHealthQuantity = Health.PlayerHealthQuantity - 1;
             Flash.StartFlash();
 
+            AudioSource.PlayClipAtPoint(PlayerHurtSound, transform.position, 1.0f);
+
             Debug.Log("Player Health: " + Health.PlayerHealthQuantity);
+
         }
     }
 }

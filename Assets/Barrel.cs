@@ -10,6 +10,8 @@ public class Barrel : MonoBehaviour
     public Health Health { get; private set; }
     public Flash Flash { get; private set; }
 
+    public AudioClip BarrelExplodesSound;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -67,6 +69,7 @@ public class Barrel : MonoBehaviour
             //Debug.Log("Barrel is dead");
             Destroy(gameObject);
             Instantiate(Explosion, transform.position, Quaternion.identity);
+            AudioSource.PlayClipAtPoint(BarrelExplodesSound, transform.position, 1.0f);
 
             var bulletRotation1 = transform.rotation * Quaternion.Euler(0, 0, 0);       
             var bulletRotation2 = transform.rotation * Quaternion.Euler(45, 0, -45);  

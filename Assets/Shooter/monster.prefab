@@ -97,8 +97,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c65d44d21c186034cae9d2556902b3a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   Speed: 1
   Health: 3
+  ScoreOnKill: 100
+  MonsterExplodesSound: {fileID: 8300000, guid: a0cd19b8acf5a4540948be99499c559a,
+    type: 3}
 --- !u!50 &4845155076964232161
 Rigidbody2D:
   serializedVersion: 4

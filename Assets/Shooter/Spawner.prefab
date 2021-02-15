@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1715015105}
   - component: {fileID: 1715015104}
   - component: {fileID: 1715015107}
-  - component: {fileID: 1696100706784043434}
   m_Layer: 9
   m_Name: Spawner
   m_TagString: Untagged
@@ -98,8 +97,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091d3fb605c85564087d497eb2dbb997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 0}
   Monster: {fileID: 5484017726801061547, guid: ade7f690e0f56ca4dbb7b2dee722fe58, type: 3}
   InstantiateTimer: 5
+  SpawnerExplodesSound: {fileID: 8300000, guid: a0cd19b8acf5a4540948be99499c559a,
+    type: 3}
+  SpawnerSound: {fileID: 8300000, guid: cc740b721d44edf469a9bb0caadfe3cb, type: 3}
 --- !u!50 &1715015105
 Rigidbody2D:
   serializedVersion: 4
@@ -152,17 +155,3 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 8.199999, y: 9.689999}
   m_Direction: 0
---- !u!114 &1696100706784043434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1344719819372239291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 091d3fb605c85564087d497eb2dbb997, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Monster: {fileID: 5484017726801061547, guid: ade7f690e0f56ca4dbb7b2dee722fe58, type: 3}
-  InstantiateTimer: 5
