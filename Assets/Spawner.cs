@@ -12,21 +12,20 @@ public class Spawner : MonoBehaviour
 
     public void Awake()
     {
-        Health = GetComponent<Health>(); 
+        Health = GetComponent<Health>();
+        InvokeRepeating("SpawnMonster", InstantiateTimer, InstantiateTimer);
+    }
+
+    void SpawnMonster()
+    {
+        Debug.Log("Spawning monster");
+        Instantiate(Monster, transform.position, Quaternion.identity);
     }
 
     // Update is called once per frame
     void Update()
     {
-        InstantiateTimer = InstantiateTimer - Time.deltaTime;
-        if (InstantiateTimer < 0)
-        {
-            Debug.Log("Spawning monster");
-            // Creer une explosion, a sa transform.position?, 
-            // Quaternion.identity: https://docs.unity3d.com/ScriptReference/Quaternion-identity.html
-            Instantiate(Monster, transform.position, Quaternion.identity);
-            InstantiateTimer = 5;
-        }
+        
     }
 
     public void onBulletCollision(Bullet bullet)
@@ -40,7 +39,5 @@ public class Spawner : MonoBehaviour
         }
 
         Debug.Log("Spawner Health: " + Health.SpawnerHealthQuantity);
-
-
     }
 }

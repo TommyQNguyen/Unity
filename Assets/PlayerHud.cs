@@ -5,31 +5,37 @@ using UnityEngine.UI;
 
 public class PlayerHud : MonoBehaviour
 {
-    private GameObject Player;
+    private Player Player;
     public Text PlayerHealthText;
     public Image PlayerHealthImage;
-    public Health Health { get; private set; }
+    public Text PlayerBombText;
+    public Image PlayerBombImage;
 
     public void Awake()
     {
-        Health = GetComponent<Health>(); 
+        //Health = GetComponent<Health>(); 
     }
 
     private void Start()
     {
-        //Player player = FindObjectOfType<Player>();
         //player.gameObject
-        Player = FindObjectOfType<Player>().gameObject;
+
+        // Va chercher le player
+        Player = FindObjectOfType<Player>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        // a voir pourquoi les points de vies ne s'affichent pas
-        //PlayerHealthText.text = "x " + Health.PlayerHealthQuantity;
-        PlayerHealthText.text = "Bonjour";
-        PlayerHealthText.color = PlayerHealthText.color.WithAlpha(0.5f);
-        PlayerHealthImage.color = PlayerHealthText.color.WithAlpha(0.5f);
+        
+        PlayerHealthText.text = Player.Health.PlayerHealthQuantity.ToString();
+        //PlayerHealthText.text = "Bonjour";
+        //PlayerHealthText.color = PlayerHealthText.color.WithAlpha(0.5f);
+        //PlayerHealthImage.color = PlayerHealthText.color.WithAlpha(0.5f);
+
+        PlayerBombText.text = "x " + Player.Items.BombQuantity;
+        //PlayerBombText.color = PlayerBombText.color.WithAlpha(0.7f);
+        //PlayerBombImage.color = PlayerBombImage.color.WithAlpha(0.7f);
     }
 }

@@ -9,7 +9,6 @@ public class Barrel : MonoBehaviour
     public GameObject Explosion; // Drag my Explosion prefab in Unity
     public Health Health { get; private set; }
     public Flash Flash { get; private set; }
-    //private bool isDetonating = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -26,7 +25,7 @@ public class Barrel : MonoBehaviour
             BarrelTimer = BarrelTimer - Time.deltaTime;
             if (BarrelTimer < 0)
             {
-                Debug.Log("Barrel Timer: " + BarrelTimer);
+                //Debug.Log("Barrel Timer: " + BarrelTimer);
                 Destroy(gameObject);
                 Instantiate(Explosion, transform.position, Quaternion.identity);
 
@@ -65,7 +64,7 @@ public class Barrel : MonoBehaviour
         }
         else if (Health.BarrelHealthQuantity < 1)
         {
-            Debug.Log("Barrel is dead");
+            //Debug.Log("Barrel is dead");
             Destroy(gameObject);
             Instantiate(Explosion, transform.position, Quaternion.identity);
 
@@ -89,7 +88,7 @@ public class Barrel : MonoBehaviour
             Instantiate(Bullet, transform.position, bulletRotation8);
         }
 
-        Debug.Log("Barrel is hit by Bullet");
-        Debug.Log("Barrel Health left: " + Health.BarrelHealthQuantity);
+        //Debug.Log("Barrel is hit by Bullet");
+        //Debug.Log("Barrel Health left: " + Health.BarrelHealthQuantity);
     }
 }

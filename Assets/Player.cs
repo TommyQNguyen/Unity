@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public GameObject Bullet; // Drag my Explosion prefab in Unity
     public GameObject Bomb;
     public Health Health { get; private set; } // Une property en C#
+    public Items Items { get; private set; }
     public Flash Flash { get; private set; }
     private bool isInvincible = false;
 
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
     {
         Health = GetComponent<Health>(); // Chercher l'instance dans le GameObject
         Flash = GetComponent<Flash>();
+        Items = GetComponent<Items>();
     }
 
     // Update is called once per frame
@@ -54,11 +56,11 @@ public class Player : MonoBehaviour
         }
         if (Input.GetButtonDown("Fire3"))
         {
-            //var bulletRotation = transform.rotation * Quaternion.Euler(0, 0, 0);
-
-            Instantiate(Bomb, transform.position, Quaternion.identity);
-
-            Debug.Log("BOMB input");
+            if (this.Items.BombQuantity > 0)
+            {
+                this.Items.BombQuantity = this.Items.BombQuantity - 1;
+                Instantiate(Bomb, transform.position, Quaternion.identity);
+            }
         }
 
         if (Flash.enabled)
