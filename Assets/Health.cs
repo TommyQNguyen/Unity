@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    public int PlayerHealthQuantity = 5;
+    //public int PlayerHealthQuantity = 5;
     public int SpawnerHealthQuantity = 20;
     public int BarrelHealthQuantity = 2;
 

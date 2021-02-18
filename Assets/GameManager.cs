@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
 
     public Player Player { get; private set; }
 
+    public Level Level {get; private set; }
+
     private void Initialize()
     {
         SoundManager = GetComponentInChildren<SoundManager>();

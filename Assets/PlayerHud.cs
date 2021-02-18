@@ -16,18 +16,33 @@ public class PlayerHud : MonoBehaviour
     private void Start()
     {
         Player = FindObjectOfType<Player>();
+
+        var player = GameManager.Instance.Player;
+        player.Health.OnChanged += OnHealthChanged;
+        //player.Bombs.OnChanged = player.Bombs.OnChanged + OnBombsChanged;
+        //player.Score.OnChanged = player.Score.OnChanged + OnScoreChanged;
     }
+
+    private void OnHealthChanged(Health health)
+    {
+        PlayerHealthText.text = health.Value.ToString();
+    }
+
+    //private void OnScoreChanged(Score score)
+    //{
+    //    PlayerScoreText.text = score.Value.ToString();
+    //}
 
     // Update is called once per frame
     void Update()
     {
-        if (Player.Health.PlayerHealthQuantity < 1)
+        if (Player.Health.Value < 1)
         {
             GameOverText.text = "Game Over";
             //Debug.Log("Game Over!");
         }
         
-        PlayerHealthText.text = Player.Health.PlayerHealthQuantity.ToString();
+        PlayerHealthText.text = Player.Health.Value.ToString();
         //PlayerHealthText.text = "Bonjour";
         //PlayerHealthText.color = PlayerHealthText.color.WithAlpha(0.5f);
         //PlayerHealthImage.color = PlayerHealthText.color.WithAlpha(0.5f);

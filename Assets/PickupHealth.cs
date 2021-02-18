@@ -21,9 +21,9 @@ public class PickupHealth : MonoBehaviour
     {
         var player = collision.gameObject.GetComponent<Player>();
         
-        if (player != null && player.Health.PlayerHealthQuantity < 5)
+        if (player != null && player.Health.Value < 5)
         {
-            player.Health.PlayerHealthQuantity = player.Health.PlayerHealthQuantity + 1;
+            player.Health.Value = player.Health.Value + 1;
             Destroy(gameObject);
         }
         else
