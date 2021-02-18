@@ -8,7 +8,6 @@ public class Bullet : MonoBehaviour
     public float DestroyTimer = 5;
     public float Speed = 5;
     public GameObject Explosion; // Drag my Explosion prefab in Unity
-    public AudioClip BulletHitSound;
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +47,7 @@ public class Bullet : MonoBehaviour
             Player.Score.ScoreNumber = Player.Score.ScoreNumber + 25;
             //Destroy(gameObject); // C'est probablement repetitif etant donne que 
             // la methode .onBulletCollision le fait deja
-            AudioSource.PlayClipAtPoint(BulletHitSound, transform.position, 1.0f);
+            GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Hit);
         }
 
         var spawner = collision2D.gameObject.GetComponent<Spawner>();
@@ -58,7 +57,7 @@ public class Bullet : MonoBehaviour
             Instantiate(Explosion, transform.position, Quaternion.identity);
             Player.Score.ScoreNumber = Player.Score.ScoreNumber + 25;
 
-            AudioSource.PlayClipAtPoint(BulletHitSound, transform.position, 1.0f);
+            GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Hit);
         }
 
 
@@ -69,7 +68,7 @@ public class Bullet : MonoBehaviour
             Instantiate(Explosion, transform.position, Quaternion.identity);
             //Destroy(gameObject);
 
-            AudioSource.PlayClipAtPoint(BulletHitSound, transform.position, 1.0f);
+            GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Hit);
         }
 
 

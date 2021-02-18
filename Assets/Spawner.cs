@@ -16,6 +16,15 @@ public class Spawner : MonoBehaviour
         Player = FindObjectOfType<Player>();
         Health = GetComponent<Health>();
         InvokeRepeating("SpawnMonster", InstantiateTimer, InstantiateTimer);
+
+        Health.OnDeath += OnDeath;
+    }
+
+    private void OnDeath(Health health)
+    {
+        Destroy(gameObject);
+        Player.Score.ScoreNumber = Player.Score.ScoreNumber + 500;
+        GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Explosion);
     }
 
     void SpawnMonster()
@@ -33,14 +42,14 @@ public class Spawner : MonoBehaviour
 
     public void onBulletCollision(Bullet bullet)
     {
-        Health.SpawnerHealthQuantity = Health.SpawnerHealthQuantity - 1;
+        Health.Value = Health.Value - 1;
 
-        if (Health.SpawnerHealthQuantity < 1)
-        {
-            Player.Score.ScoreNumber = Player.Score.ScoreNumber + 500;
-            Destroy(gameObject);
-            AudioSource.PlayClipAtPoint(SpawnerExplodesSound, transform.position, 1.0f);
-        }
-        //Debug.Log("Spawner Health: " + Health.SpawnerHealthQuantity);
+        //if (Health.Value < 1)
+        //{
+        //Player.Score.ScoreNumber = Player.Score.ScoreNumber + 500;
+        //Destroy(gameObject);
+        //AudioSource.PlayClipAtPoint(SpawnerExplodesSound, transform.position, 1.0f);
+        //}
+        Debug.Log("Spawner Health: " + Health.Value);
     }
 }

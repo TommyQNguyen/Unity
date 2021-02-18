@@ -136,9 +136,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b34a437484cd91d498cdee04024ff9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerHealthQuantity: 5
   SpawnerHealthQuantity: 20
   BarrelHealthQuantity: 2
+  Max: 20
 --- !u!70 &1715015107
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -298220110507592543}
   - component: {fileID: -5316085545201928260}
   - component: {fileID: -379056057489757597}
+  - component: {fileID: -568861650163639703}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -124,9 +125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b34a437484cd91d498cdee04024ff9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerHealthQuantity: 5
-  SpawnerHealthQuantity: 20
   BarrelHealthQuantity: 2
+  Max: 0
 --- !u!114 &-298220110507592543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,3 +180,17 @@ MonoBehaviour:
   FlashOnTime: 0.1
   FlashOffTime: 0.1
   Duration: 2
+--- !u!114 &-568861650163639703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2294625536558172216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b34a437484cd91d498cdee04024ff9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BarrelHealthQuantity: 2
+  Max: 2
