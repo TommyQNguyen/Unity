@@ -1539,12 +1539,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletSpawnPoint: {fileID: 141216577}
-  Bullet: {fileID: 1097704576117470891, guid: 8c42e381fe7394a498bcfb2e29d4410d, type: 3}
-  Bomb: {fileID: 9109819499157459669, guid: 0e03093fa62965a48b82489c898f694c, type: 3}
-  PistolSound: {fileID: 8300000, guid: 1dbb64fa1bb362e478821e981898fb68, type: 3}
-  ShotgunSound: {fileID: 8300000, guid: d2909f8b814892643a1cee3e37ab4c12, type: 3}
-  PlayerHurtSound: {fileID: 8300000, guid: 1ac9f17d16aae224ea046ce4d197978b, type: 3}
-  PlayerExplodesSound: {fileID: 8300000, guid: a0cd19b8acf5a4540948be99499c559a, type: 3}
 --- !u!50 &2024845037
 Rigidbody2D:
   serializedVersion: 4
@@ -1612,6 +1606,7 @@ MonoBehaviour:
   PlayerHealthQuantity: 5
   SpawnerHealthQuantity: 20
   BarrelHealthQuantity: 2
+  Max: 5
 --- !u!114 &2024845041
 MonoBehaviour:
   m_ObjectHideFlags: 0

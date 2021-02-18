@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    
+
     public Transform BulletSpawnPoint;
-    public GameObject Bullet; // Drag my Explosion prefab in Unity
-    public GameObject Bomb;
+    //public GameObject Bullet; // Drag my Explosion prefab in Unity
+    //public GameObject Bomb;
     public Health Health { get; private set; } // Une property en C#
     public Items Items { get; private set; }
     public Score Score { get; private set; }
     public Flash Flash { get; private set; }
     private bool isInvincible = false;
 
-    public AudioClip PistolSound;
-    public AudioClip ShotgunSound;
-    public AudioClip PlayerHurtSound;
-    public AudioClip PlayerExplodesSound;
+    //public AudioClip PistolSound;
+    //public AudioClip ShotgunSound;
+    //public AudioClip PlayerHurtSound;
+    //public AudioClip PlayerExplodesSound;
 
 
 
@@ -46,9 +46,11 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             var bulletRotation = transform.rotation * Quaternion.Euler(0, 0, 0);
-            Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation);
+            //Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation);
+            GameManager.Instance.PrefabManager.Spawn(PrefabManager.Global.Bullet, BulletSpawnPoint.position, bulletRotation);
+            GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Pistol);
 
-            AudioSource.PlayClipAtPoint(PistolSound, transform.position, 1.0f);
+            //AudioSource.PlayClipAtPoint(PistolSound, transform.position, 1.0f);
         }
 
         if (Input.GetButtonDown("Fire2"))
@@ -59,18 +61,23 @@ public class Player : MonoBehaviour
             var bulletRotation3 = transform.rotation * Quaternion.Euler(30, 0, -30);    // Se dirige en diagonale en bas
 
             // Fait apparaitre les Bullets a partir de leur spawn point
-            Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation1);
-            Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation2);
-            Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation3);
+            //Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation1);
+            //Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation2);
+            //Instantiate(Bullet, BulletSpawnPoint.position, bulletRotation3);
 
-            AudioSource.PlayClipAtPoint(ShotgunSound, transform.position, 1.0f);
+            GameManager.Instance.PrefabManager.Spawn(PrefabManager.Global.Bullet, BulletSpawnPoint.position, bulletRotation1);
+            GameManager.Instance.PrefabManager.Spawn(PrefabManager.Global.Bullet, BulletSpawnPoint.position, bulletRotation2);
+            GameManager.Instance.PrefabManager.Spawn(PrefabManager.Global.Bullet, BulletSpawnPoint.position, bulletRotation3);
+
+            GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Shotgun);
         }
         if (Input.GetButtonDown("Fire3"))
         {
             if (this.Items.BombQuantity > 0)
             {
                 this.Items.BombQuantity = this.Items.BombQuantity - 1;
-                Instantiate(Bomb, transform.position, Quaternion.identity);
+                //Instantiate(Bomb, transform.position, Quaternion.identity);
+                GameManager.Instance.PrefabManager.Spawn(PrefabManager.Global.Bomb, transform.position, Quaternion.identity);
             }
         }
 
@@ -98,13 +105,15 @@ public class Player : MonoBehaviour
             if (Health.PlayerHealthQuantity < 1)
             {
                 Destroy(gameObject);
-                AudioSource.PlayClipAtPoint(PlayerExplodesSound, transform.position, 1.0f);
+                //AudioSource.PlayClipAtPoint(PlayerExplodesSound, transform.position, 1.0f);
+                GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Explosion);
             }
 
             Health.PlayerHealthQuantity = Health.PlayerHealthQuantity - 1;
             Flash.StartFlash();
 
-            AudioSource.PlayClipAtPoint(PlayerHurtSound, transform.position, 1.0f);
+            //AudioSource.PlayClipAtPoint(PlayerHurtSound, transform.position, 1.0f);
+            GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Hurt);
 
             Debug.Log("Player Health: " + Health.PlayerHealthQuantity);
 
