@@ -18,9 +18,14 @@ public class PlayerHud : MonoBehaviour
         Player = FindObjectOfType<Player>();
 
         var player = GameManager.Instance.Player;
+
         player.Health.OnChanged += OnHealthChanged;
-        //player.Bombs.OnChanged = player.Bombs.OnChanged + OnBombsChanged;
-        //player.Score.OnChanged = player.Score.OnChanged + OnScoreChanged;
+        //player.Bombs.OnChanged += OnBombsChanged;
+        //player.Score.OnChanged += OnScoreChanged;
+
+        OnHealthChanged(player.Health);
+        //OnBombsChanged(player.Bombs);
+        //OnScoreChanged(player.Score);
     }
 
     private void OnHealthChanged(Health health)
@@ -33,6 +38,11 @@ public class PlayerHud : MonoBehaviour
     //    PlayerScoreText.text = score.Value.ToString();
     //}
 
+    //private void OnBombsChanged(Bombs bombs)
+    //{
+    //    PlayerBombsText.text = "x " + bombs.Value;
+    //}
+
     // Update is called once per frame
     void Update()
     {
@@ -41,11 +51,11 @@ public class PlayerHud : MonoBehaviour
             GameOverText.text = "Game Over";
             //Debug.Log("Game Over!");
         }
-        
-        PlayerHealthText.text = Player.Health.Value.ToString();
-        //PlayerHealthText.text = "Bonjour";
-        //PlayerHealthText.color = PlayerHealthText.color.WithAlpha(0.5f);
-        //PlayerHealthImage.color = PlayerHealthText.color.WithAlpha(0.5f);
+
+        //    PlayerHealthText.text = Player.Health.Value.ToString();
+        //    //PlayerHealthText.text = "Bonjour";
+        //    //PlayerHealthText.color = PlayerHealthText.color.WithAlpha(0.5f);
+        //    //PlayerHealthImage.color = PlayerHealthText.color.WithAlpha(0.5f);
 
         PlayerBombText.text = "x " + Player.Items.BombQuantity;
         //PlayerBombText.color = PlayerBombText.color.WithAlpha(0.7f);

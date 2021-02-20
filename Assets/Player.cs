@@ -28,9 +28,10 @@ public class Player : MonoBehaviour
     {
         Health = GetComponent<Health>(); // Chercher l'instance dans le GameObject
 
-
+        // Voir reference a Health.cs
         Health.OnDeath += OnDeath;
-
+        Health.OnHit += OnHit;
+        
         Flash = GetComponent<Flash>();
         Items = GetComponent<Items>();
         Score = GetComponent<Score>();
@@ -40,6 +41,12 @@ public class Player : MonoBehaviour
     {
         Destroy(gameObject);
         GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Explosion);
+    }
+
+    private void OnHit(Health health)
+    {
+        GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Hurt);
+        //Debug.Log("OhHit!!");
     }
 
     // Update is called once per frame
@@ -92,19 +99,12 @@ public class Player : MonoBehaviour
         // L'objet qui est maintenant reçu en collision est maintenant le MonsterHitbox,
         // au lieu du Monster qui ne contient pas de script Enemy. 
         // Il faut plutôt faire, qui va rechercher dans son parent 
-        var enemy = collision.gameObject.GetComponentInParent<Monster>(); 
-        
+        var enemy = collision.gameObject.GetComponentInParent<Monster>();
+
         if (enemy != null && isInvincible == false)
         {
-            //if (Health.PlayerHealthQuantity < 1)
-            //{
-            
-            //}
-
             Health.Value -= 1;
             Flash.StartFlash();
-
-            GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Hurt);
 
             Debug.Log("Player Health: " + Health.Value);
         }
