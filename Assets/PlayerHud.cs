@@ -52,10 +52,10 @@ public class PlayerHud : MonoBehaviour
             //Debug.Log("Game Over!");
         }
 
-        //    PlayerHealthText.text = Player.Health.Value.ToString();
-        //    //PlayerHealthText.text = "Bonjour";
-        //    //PlayerHealthText.color = PlayerHealthText.color.WithAlpha(0.5f);
-        //    //PlayerHealthImage.color = PlayerHealthText.color.WithAlpha(0.5f);
+        //PlayerHealthText.text = Player.Health.Value.ToString();
+        //PlayerHealthText.text = "Bonjour";
+        //PlayerHealthText.color = PlayerHealthText.color.WithAlpha(0.5f);
+        //PlayerHealthImage.color = PlayerHealthText.color.WithAlpha(0.5f);
 
         PlayerBombText.text = "x " + Player.Items.BombQuantity;
         //PlayerBombText.color = PlayerBombText.color.WithAlpha(0.7f);

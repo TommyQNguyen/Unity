@@ -92,32 +92,6 @@ public class Barrel : MonoBehaviour
         {
             Flash.StartFlash();
         }
-        //else if (Health.Value < 1)
-        //{
-        //    //Debug.Log("Barrel is dead");
-        //    Destroy(gameObject);
-        //    Instantiate(Explosion, transform.position, Quaternion.identity);
-        //    AudioSource.PlayClipAtPoint(BarrelExplodesSound, transform.position, 1.0f);
-
-        //    var bulletRotation1 = transform.rotation * Quaternion.Euler(0, 0, 0);       
-        //    var bulletRotation2 = transform.rotation * Quaternion.Euler(45, 0, -45);  
-        //    var bulletRotation3 = transform.rotation * Quaternion.Euler(90, 0, -90);    
-        //    var bulletRotation4 = transform.rotation * Quaternion.Euler(135, 0, -135);       
-        //    var bulletRotation5 = transform.rotation * Quaternion.Euler(180, 0, -180);  
-        //    var bulletRotation6 = transform.rotation * Quaternion.Euler(225, 0, -225);    
-        //    var bulletRotation7 = transform.rotation * Quaternion.Euler(270, 0, -270);       
-        //    var bulletRotation8 = transform.rotation * Quaternion.Euler(315, 0, -315);
-
-        //    // Shoot les bullets partout sur explosion
-        //    Instantiate(Bullet, transform.position, bulletRotation1);
-        //    Instantiate(Bullet, transform.position, bulletRotation2);
-        //    Instantiate(Bullet, transform.position, bulletRotation3);
-        //    Instantiate(Bullet, transform.position, bulletRotation4);
-        //    Instantiate(Bullet, transform.position, bulletRotation5);
-        //    Instantiate(Bullet, transform.position, bulletRotation6);
-        //    Instantiate(Bullet, transform.position, bulletRotation7);
-        //    Instantiate(Bullet, transform.position, bulletRotation8);
-        //}
 
         //Debug.Log("Barrel is hit by Bullet");
         Debug.Log("Barrel Health left: " + Health.Value);

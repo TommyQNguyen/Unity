@@ -8,7 +8,6 @@ public class Bomb : MonoBehaviour
     public float BombExplodeTimer = 2;
     public GameObject BulletGameObject;
     public GameObject ExplosionGameObject;
-    public AudioClip BombExplodesSound;
     public Flash BombFlash { get; private set; }
     void Awake()
     {
@@ -25,8 +24,8 @@ public class Bomb : MonoBehaviour
     void OnExplode()
     {
         Destroy(gameObject);
-        Instantiate(ExplosionGameObject, transform.position, Quaternion.identity);
-        AudioSource.PlayClipAtPoint(BombExplodesSound, transform.position, 1.0f);
+        GameManager.Instance.PrefabManager.Spawn(PrefabManager.Global.Bomb, transform.position, Quaternion.identity);
+        GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Explosion);
 
         var bulletRotation1 = transform.rotation * Quaternion.Euler(0, 0, 0);
         var bulletRotation2 = transform.rotation * Quaternion.Euler(45, 0, -45);

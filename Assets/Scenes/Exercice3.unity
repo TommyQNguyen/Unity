@@ -1603,8 +1603,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b34a437484cd91d498cdee04024ff9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnerHealthQuantity: 20
-  BarrelHealthQuantity: 2
   Max: 5
 --- !u!114 &2024845041
 MonoBehaviour:

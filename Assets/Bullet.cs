@@ -70,8 +70,5 @@ public class Bullet : MonoBehaviour
 
             GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Hit);
         }
-
-
-
     }
 }

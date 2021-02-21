@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15d120bd94908542b49d1a8178f4fec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Max: 3
   BombTimer: 1
   BombExplodeTimer: 2
   BulletGameObject: {fileID: 1097704576117470891, guid: 8c42e381fe7394a498bcfb2e29d4410d,

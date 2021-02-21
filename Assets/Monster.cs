@@ -11,8 +11,6 @@ public class Monster : MonoBehaviour
 
     private GameObject Player;
 
-    public AudioClip MonsterExplodesSound;
-
     private void Start()
     {
         //Player player = FindObjectOfType<Player>();
@@ -43,10 +41,9 @@ public class Monster : MonoBehaviour
             //Debug.Log("Enemy is dead");
             Destroy(gameObject);
 
-            AudioSource.PlayClipAtPoint(MonsterExplodesSound, transform.position, 1.0f);
+            GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Explosion);
         }
 
-
-        Debug.Log("Enemy Health: " + Health);
+        //Debug.Log("Enemy Health: " + Health);
     }
 }
