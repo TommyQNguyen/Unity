@@ -62,7 +62,10 @@ public class Mario : MonoBehaviour
         PlatformController.InputJump = Input.GetButtonDown("Jump");
         PlatformController.InputMove = Input.GetAxisRaw("Horizontal");
 
-        var speedRatio = PlatformController.CurrentSpeed / PlatformController.MoveSpeed;
-        Animator.speed = RunAnimationSpeed.Lerp(speedRatio);
+        if (Animator.GetCurrentAnimatorStateInfo(0).IsName("Mario_Run"))
+        {
+            var speedRatio = Mathf.Abs(PlatformController.CurrentSpeed / PlatformController.MoveSpeed);
+            Animator.speed = RunAnimationSpeed.Lerp(speedRatio);
+        }
     }
 }
