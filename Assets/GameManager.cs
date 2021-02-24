@@ -56,4 +56,9 @@ public class GameManager : MonoBehaviour
     {
         Player = FindObjectOfType<Player>();
     }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }

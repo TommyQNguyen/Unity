@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Mario : MonoBehaviour
 {
@@ -10,23 +11,56 @@ public class Mario : MonoBehaviour
     public PlatformController PlatformController { get; private set; }
     
     public Animator Animator { get; private set; }
+    public Health Health { get; private set; }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         PlatformController = GetComponent<PlatformController>();
         PlatformController.OnJump += OnJump;
+        PlatformController.OnFall += OnFall;
         PlatformController.OnMoveStart += OnMoveStart;
         PlatformController.OnMoveStop += OnMoveStop;
         PlatformController.OnLand += OnLand;
+
         Animator = GetComponent<Animator>();
+        Health = GetComponent<Health>();
+        Health.OnDeath += OnDeath;
+    }
+
+    private void OnDeath(Health health)
+    {
+        
+
+        // A faire
+        // Animator.Play("Mario_Dead");
+
+        // Attendre 3 secondes
+        // Empecher bouger
+        //PlatformController.enabled = false;
+        //PlatformController.BoxCollider2D.enabled = false;
+        //PlatformController.Rigidbody2D.simulated = false; // Decocher le RigidBody
+
+        Destroy(gameObject);
+
+
+        // Restart level
+        GameManager.Instance.Invoke(nameof(GameManager.RestartLevel), 3.0f);
+        
+    }
+
+    
+
+    private void OnFall(PlatformController platformController)
+    {
+        Animator.Play("Mario_Jump");
     }
 
     private void OnLand(PlatformController platformController)
     {
         if (PlatformController.IsMoving)
         {
-            Animator.Play("Mario_Idle");
+            Animator.Play("Mario_Run");
         }
         else
         {
@@ -36,7 +70,7 @@ public class Mario : MonoBehaviour
 
     private void OnMoveStop(PlatformController platformController)
     {
-        if (!PlatformController.IsJumping)
+        if (PlatformController.IsGrounded)
         {
             Animator.Play("Mario_Idle");
         }
@@ -45,7 +79,7 @@ public class Mario : MonoBehaviour
 
     private void OnMoveStart(PlatformController platformController)
     {
-        if (!PlatformController.IsJumping)
+        if (PlatformController.IsGrounded)
         {
             Animator.Play("Mario_Run");
         }
@@ -68,4 +102,41 @@ public class Mario : MonoBehaviour
             Animator.speed = RunAnimationSpeed.Lerp(speedRatio);
         }
     }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        Debug.Log("OnTriggerStay2D");
+
+
+        var health = collision.GetComponentInParent<Health>();
+        if (health)
+        {
+            Debug.Log("OnTriggerStay2D Health");
+
+            // Mario ou Goomba gagne
+            var marioPosition = PlatformController.BoxCollider2D.bounds.min.y;
+            var enemyPosition = collision.bounds.min.y + 0.5 * collision.bounds.extents.y;
+
+            if (marioPosition > enemyPosition)
+            {
+                // Mario gagne
+                health.Value -= 1;
+
+                PlatformController.Jump();
+            }
+            else
+            {
+                // Goomba gagne
+                Health.Value -= 1;
+            }
+        }
+
+
+
+
+
+
+    }
+
+
 }

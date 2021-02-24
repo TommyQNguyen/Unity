@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,12 +9,9 @@ using UnityEngine;
 public class PlatformController : MonoBehaviour
 {
     private static readonly string[] LayerMaskNames = { "Floor" };
-    private static readonly float GroundedColliderSize = 0.01f;
-    private static readonly float WalledColliderSize = 0.01f;
-    private static readonly float WalledColliderPadding = 0.04f;
-    private static readonly float CeilingColliderSize = 0.01f;
-    private static readonly Color CollisionOnColor = Color.green;
-    private static readonly Color CollisionOffColor = Color.red;
+    private static readonly Vector2 ColliderSize = new Vector2(0.005f, 0.005f);
+    private static readonly Color DebugCollisionOnColor = Color.green;
+    private static readonly Color DebugCollisionOffColor = Color.red;
 
     public static bool ShowDebug { get; set; } = true;
 
@@ -37,8 +35,8 @@ public class PlatformController : MonoBehaviour
 
     private int _layerMask;
 
-    public bool InputJump { get; set; }
-    public float InputMove { get; set; }
+    public bool InputJump { get; set; } // true ButtonDown
+    public float InputMove { get; set; } // -1, 1 AxisRaw
 
     public BoxCollider2D BoxCollider2D { get; private set; }
     public Rigidbody2D Rigidbody2D { get; private set; }
@@ -74,6 +72,21 @@ public class PlatformController : MonoBehaviour
         JumpsRemaining = Jumps;
     }
 
+    public void Jump()
+    {
+        // Cancel previous fall momentum on jump
+        Rigidbody2D.velocity = Rigidbody2D.velocity.WithY(0);
+
+        // Jump the same height regardless of object mass and gravity
+        var jumpStrength = JumpStrength * Rigidbody2D.mass * Mathf.Sqrt(Rigidbody2D.gravityScale);
+        Rigidbody2D.AddForce(Vector2.up * jumpStrength);
+
+        JumpsRemaining -= 1;
+        IsJumping = true;
+        IsFalling = false;
+        OnJump?.Invoke(this);
+    }
+
     private void Awake()
     {
         BoxCollider2D = GetComponent<BoxCollider2D>();
@@ -87,46 +100,58 @@ public class PlatformController : MonoBehaviour
 
     private void Update()
     {
-        UpdateGrounded();
-        UpdateCeiling();
-        UpdateWalled();
+        UpdateCollisions();
         UpdateJump();
-    }
-
-    private void FixedUpdate()
-    {
         UpdateMove();
     }
 
-    private void UpdateGrounded()
+    private void UpdateCollisions()
     {
-        var wasGrounded = IsGrounded;
+        bool wasGrounded = IsGrounded;
+        bool wasCeiling = IsCeiling;
+        bool wasWalledLeft = IsWalledLeft;
+        bool wasWalledRight = IsWalledRight;
+
+        IsGrounded = false;
+        IsCeiling = false;
+        IsWalledLeft = false;
+        IsWalledRight = false;
 
         var bounds = BoxCollider2D.bounds;
-        bounds.center = bounds.center.WithY(bounds.center.y - bounds.extents.y);
-        bounds.extents = bounds.extents.WithY(GroundedColliderSize / 2);
+        var groundRaycastHit2D = Physics2D.BoxCastAll(bounds.center, bounds.size + new Vector3(ColliderSize.x, 0, 0), transform.localEulerAngles.z, Vector2.down, ColliderSize.y, _layerMask);
+        var ceilingRaycastHit2D = Physics2D.BoxCastAll(bounds.center, bounds.size + new Vector3(ColliderSize.x, 0, 0), transform.localEulerAngles.z, Vector2.up, ColliderSize.y, _layerMask);
+        var walledLeftRaycastHit2D = Physics2D.BoxCastAll(bounds.center, bounds.size, transform.localEulerAngles.z, Vector2.left, ColliderSize.x, _layerMask);
+        var walledRightRaycastHit2D = Physics2D.BoxCastAll(bounds.center, bounds.size, transform.localEulerAngles.z, Vector2.right, ColliderSize.x, _layerMask);
 
-        var raycastHit = Physics2D.BoxCast(bounds.center, bounds.size, transform.localEulerAngles.z, Vector2.down, GroundedColliderSize, _layerMask);
-        IsGrounded = raycastHit.collider != null;
-        DebugDrawBox(bounds, IsGrounded);
+        UpdateCollisionRaycastHits(groundRaycastHit2D);
+        UpdateCollisionRaycastHits(ceilingRaycastHit2D);
+        UpdateCollisionRaycastHits(walledLeftRaycastHit2D);
+        UpdateCollisionRaycastHits(walledRightRaycastHit2D);
 
-        UpdateLand(wasGrounded);
-        UpdateFall();
-    }
+        IsWalled = IsWalledLeft || IsWalledRight;
 
-    private void UpdateLand(bool wasGrounded)
-    {
         if (wasGrounded != IsGrounded
             && IsGrounded)
         {
             ResetJumpsRemaining();
             IsJumping = false;
+            IsFalling = false;
             OnLand?.Invoke(this);
         }
-    }
 
-    private void UpdateFall()
-    {
+        if (wasCeiling != IsCeiling
+            && IsCeiling)
+        {
+            OnCeiling?.Invoke(this);
+        }
+
+        if ((wasWalledLeft != IsWalledLeft
+            || wasWalledRight != IsWalledRight)
+            && IsWalled)
+        {
+            OnWall?.Invoke(this);
+        }
+
         if (!IsGrounded
             && !IsFalling
             && Rigidbody2D.velocity.y < 0.0f)
@@ -134,63 +159,41 @@ public class PlatformController : MonoBehaviour
             IsFalling = true;
             OnFall?.Invoke(this);
         }
+
+        DebugDrawCollisions();
     }
 
-    private void UpdateCeiling()
+    private void UpdateCollisionRaycastHits(RaycastHit2D[] raycastHits)
     {
-        var wasCeiling = IsCeiling;
-
-        var bounds = BoxCollider2D.bounds;
-        bounds.center = bounds.center.WithY(bounds.center.y + bounds.extents.y + CeilingColliderSize / 2);
-        bounds.extents = bounds.extents.WithY(CeilingColliderSize / 2);
-
-        var raycastHit = Physics2D.BoxCast(bounds.center, bounds.size, transform.localEulerAngles.z, Vector2.up, CeilingColliderSize, _layerMask);
-        IsCeiling = raycastHit.collider != null;
-        DebugDrawBox(bounds, IsCeiling);
-
-        if (wasCeiling != IsCeiling
-            && IsCeiling)
+        foreach (var raycastHit in raycastHits)
         {
-            OnCeiling?.Invoke(this);
+            //Debug.Log(String.Format("Contact : GameObject {0} Point {1} Normal {2}",
+            //    raycastHit.collider.name,
+            //    raycastHit.point,
+            //    raycastHit.normal));
+
+            if (raycastHit.normal.y > 0.0f)
+            {
+                //Debug.Log("Ground");
+                IsGrounded = true;
+            }
+            else if (raycastHit.normal.y < 0.0f)
+            {
+                //Debug.Log("Ceiling");
+                IsCeiling = true;
+            }
+
+            if (raycastHit.normal.x > 0.0f)
+            {
+                //Debug.Log("Left");
+                IsWalledLeft = true;
+            }
+            else if (raycastHit.normal.x < 0.0f)
+            {
+                //Debug.Log("Right");
+                IsWalledRight = true;
+            }
         }
-    }
-
-    private void UpdateWalled()
-    {
-        var wasWalled = IsWalled;
-
-        UpdateWalledLeft();
-        UpdateWalledRight();
-
-        IsWalled = IsWalledLeft || IsWalledRight;
-
-        if (wasWalled != IsWalled
-            && IsWalled)
-        {
-            OnWall?.Invoke(this);
-        }
-    }
-
-    private void UpdateWalledLeft()
-    {
-        var bounds = BoxCollider2D.bounds;
-        bounds.center = new Vector2(bounds.center.x - bounds.extents.x, bounds.center.y + GroundedColliderSize / 2);
-        bounds.extents = new Vector2(WalledColliderSize / 2, bounds.extents.y - WalledColliderPadding);
-
-        var raycastHit = Physics2D.BoxCast(bounds.center, bounds.size, transform.localEulerAngles.z, Vector2.left, WalledColliderSize, _layerMask);
-        IsWalledLeft = raycastHit.collider != null;
-        DebugDrawBox(bounds, IsWalledLeft);
-    }
-
-    private void UpdateWalledRight()
-    {
-        var bounds = BoxCollider2D.bounds;
-        bounds.center = new Vector2(bounds.center.x + bounds.extents.x, bounds.center.y + GroundedColliderSize / 2);
-        bounds.extents = new Vector2(WalledColliderSize / 2, bounds.extents.y - WalledColliderPadding);
-
-        var raycastHit = Physics2D.BoxCast(bounds.center, bounds.size, transform.localEulerAngles.z, Vector2.right, WalledColliderSize, _layerMask);
-        IsWalledRight = raycastHit.collider != null;
-        DebugDrawBox(bounds, IsWalledRight);
     }
 
     private void UpdateJump()
@@ -206,17 +209,7 @@ public class PlatformController : MonoBehaviour
         if (IsGrounded
             || (Jumps > 1 && JumpsRemaining > 0))
         {
-            // Cancel previous fall momentum on jump
-            Rigidbody2D.velocity = Rigidbody2D.velocity.WithY(0);
-
-            // Jump the same height regardless of object mass and gravity
-            var jumpStrength = JumpStrength * Rigidbody2D.mass * Mathf.Sqrt(Rigidbody2D.gravityScale);
-            Rigidbody2D.AddForce(Vector2.up * jumpStrength);
-
-            JumpsRemaining -= 1;
-            IsJumping = true;
-            IsFalling = false;
-            OnJump?.Invoke(this);
+            Jump();
         }
     }
 
@@ -283,12 +276,50 @@ public class PlatformController : MonoBehaviour
         Rigidbody2D.velocity = velocity;
     }
 
+    private void DebugDrawCollisions()
+    {
+        if (!ShowDebug)
+            return;
+
+        // Ground
+        {
+            var bounds = BoxCollider2D.bounds;
+            bounds.center = bounds.center.WithY(bounds.center.y - bounds.extents.y);
+            bounds.extents = bounds.extents.WithY(ColliderSize.y / 2);
+            DebugDrawBox(bounds, IsGrounded);
+        }
+
+        // Ceiling
+        {
+            var bounds = BoxCollider2D.bounds;
+            bounds.center = bounds.center.WithY(bounds.center.y + bounds.extents.y);
+            bounds.extents = bounds.extents.WithY(ColliderSize.y / 2);
+            DebugDrawBox(bounds, IsCeiling);
+        }
+
+        // Left
+        {
+            var bounds = BoxCollider2D.bounds;
+            bounds.center = new Vector2(bounds.center.x - bounds.extents.x, bounds.center.y);
+            bounds.extents = new Vector2(ColliderSize.x / 2, bounds.extents.y);
+            DebugDrawBox(bounds, IsWalledLeft);
+        }
+
+        // Right
+        {
+            var bounds = BoxCollider2D.bounds;
+            bounds.center = new Vector2(bounds.center.x + bounds.extents.x, bounds.center.y);
+            bounds.extents = new Vector2(ColliderSize.x / 2, bounds.extents.y);
+            DebugDrawBox(bounds, IsWalledRight);
+        }
+    }
+
     private void DebugDrawBox(Bounds bounds, bool isOn)
     {
-        if (ShowDebug)
-        {
-            var color = isOn ? CollisionOnColor : CollisionOffColor;
-            DebugExtensions.DrawBox(bounds, color);
-        }
+        if (!ShowDebug)
+            return;
+
+        var color = isOn ? DebugCollisionOnColor : DebugCollisionOffColor;
+        DebugExtensions.DrawBox(bounds, color);
     }
 }
