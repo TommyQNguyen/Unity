@@ -88,6 +88,7 @@ public class Mario : MonoBehaviour
     private void OnJump(PlatformController platformController)
     {
         Animator.Play("Mario_Jump");
+        GameManager.Instance.SoundManager.PlatformerPlay(SoundManager.PlatformerSfx.Jump);
     }
 
     // Update is called once per frame

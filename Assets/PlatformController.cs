@@ -8,6 +8,14 @@ using UnityEngine;
 [RequireComponent(typeof(FacingController))]
 public class PlatformController : MonoBehaviour
 {
+    private struct PreviousState
+    {
+        public bool WasGrounded;
+        public bool WasCeiling;
+        public bool WasWalledLeft;
+        public bool WasWalledRight;
+    }
+
     private static readonly string[] LayerMaskNames = { "Floor" };
     private static readonly Vector2 ColliderSize = new Vector2(0.005f, 0.005f);
     private static readonly Color DebugCollisionOnColor = Color.green;
@@ -100,28 +108,32 @@ public class PlatformController : MonoBehaviour
 
     private void Update()
     {
+        PreviousState previousState;
+        previousState.WasGrounded = IsGrounded;
+        previousState.WasCeiling = IsCeiling;
+        previousState.WasWalledLeft = IsWalledLeft;
+        previousState.WasWalledRight = IsWalledRight;
+
         UpdateCollisions();
         UpdateJump();
         UpdateMove();
+
+        // Needs to be done after all updates to prevent bugs
+        SendEvents(previousState);
     }
 
     private void UpdateCollisions()
     {
-        bool wasGrounded = IsGrounded;
-        bool wasCeiling = IsCeiling;
-        bool wasWalledLeft = IsWalledLeft;
-        bool wasWalledRight = IsWalledRight;
-
-        IsGrounded = false;
-        IsCeiling = false;
-        IsWalledLeft = false;
-        IsWalledRight = false;
-
         var bounds = BoxCollider2D.bounds;
         var groundRaycastHit2D = Physics2D.BoxCastAll(bounds.center, bounds.size + new Vector3(ColliderSize.x, 0, 0), transform.localEulerAngles.z, Vector2.down, ColliderSize.y, _layerMask);
         var ceilingRaycastHit2D = Physics2D.BoxCastAll(bounds.center, bounds.size + new Vector3(ColliderSize.x, 0, 0), transform.localEulerAngles.z, Vector2.up, ColliderSize.y, _layerMask);
         var walledLeftRaycastHit2D = Physics2D.BoxCastAll(bounds.center, bounds.size, transform.localEulerAngles.z, Vector2.left, ColliderSize.x, _layerMask);
         var walledRightRaycastHit2D = Physics2D.BoxCastAll(bounds.center, bounds.size, transform.localEulerAngles.z, Vector2.right, ColliderSize.x, _layerMask);
+
+        IsGrounded = false;
+        IsCeiling = false;
+        IsWalledLeft = false;
+        IsWalledRight = false;
 
         UpdateCollisionRaycastHits(groundRaycastHit2D);
         UpdateCollisionRaycastHits(ceilingRaycastHit2D);
@@ -129,36 +141,6 @@ public class PlatformController : MonoBehaviour
         UpdateCollisionRaycastHits(walledRightRaycastHit2D);
 
         IsWalled = IsWalledLeft || IsWalledRight;
-
-        if (wasGrounded != IsGrounded
-            && IsGrounded)
-        {
-            ResetJumpsRemaining();
-            IsJumping = false;
-            IsFalling = false;
-            OnLand?.Invoke(this);
-        }
-
-        if (wasCeiling != IsCeiling
-            && IsCeiling)
-        {
-            OnCeiling?.Invoke(this);
-        }
-
-        if ((wasWalledLeft != IsWalledLeft
-            || wasWalledRight != IsWalledRight)
-            && IsWalled)
-        {
-            OnWall?.Invoke(this);
-        }
-
-        if (!IsGrounded
-            && !IsFalling
-            && Rigidbody2D.velocity.y < 0.0f)
-        {
-            IsFalling = true;
-            OnFall?.Invoke(this);
-        }
 
         DebugDrawCollisions();
     }
@@ -174,23 +156,23 @@ public class PlatformController : MonoBehaviour
 
             if (raycastHit.normal.y > 0.0f)
             {
-                //Debug.Log("Ground");
+                //Debug.Log(gameObject.name + " Ground");
                 IsGrounded = true;
             }
             else if (raycastHit.normal.y < 0.0f)
             {
-                //Debug.Log("Ceiling");
+                //Debug.Log(gameObject.name + " Ceiling");
                 IsCeiling = true;
             }
 
             if (raycastHit.normal.x > 0.0f)
             {
-                //Debug.Log("Left");
+                //Debug.Log(gameObject.name + " Left");
                 IsWalledLeft = true;
             }
             else if (raycastHit.normal.x < 0.0f)
             {
-                //Debug.Log("Right");
+                //Debug.Log(gameObject.name + " Right");
                 IsWalledRight = true;
             }
         }
@@ -219,22 +201,6 @@ public class PlatformController : MonoBehaviour
             UpdateMoveAcceleration();
         else
             UpdateMoveDeceleration();
-
-        // Started moving
-        if (!IsMoving
-            && Rigidbody2D.velocity.x != 0.0f)
-        {
-            IsMoving = true;
-            OnMoveStart?.Invoke(this);
-        }
-
-        // Stopped moving
-        if (IsMoving
-            && Rigidbody2D.velocity.x == 0.0f)
-        {
-            IsMoving = false;
-            OnMoveStop?.Invoke(this);
-        }
     }
 
     private void UpdateMoveAcceleration()
@@ -274,6 +240,59 @@ public class PlatformController : MonoBehaviour
         }
 
         Rigidbody2D.velocity = velocity;
+    }
+
+    private void SendEvents(PreviousState previousState)
+    {
+        // Grounded
+        if (previousState.WasGrounded != IsGrounded
+            && IsGrounded)
+        {
+            ResetJumpsRemaining();
+            IsJumping = false;
+            IsFalling = false;
+            OnLand?.Invoke(this);
+        }
+
+        // Ceiling
+        if (previousState.WasCeiling != IsCeiling
+            && IsCeiling)
+        {
+            OnCeiling?.Invoke(this);
+        }
+
+        // Wall
+        if ((previousState.WasWalledLeft != IsWalledLeft
+            || previousState.WasWalledRight != IsWalledRight)
+            && IsWalled)
+        {
+            OnWall?.Invoke(this);
+        }
+
+        // Fall
+        if (!IsGrounded
+            && !IsFalling
+            && Rigidbody2D.velocity.y < 0.0f)
+        {
+            IsFalling = true;
+            OnFall?.Invoke(this);
+        }
+
+        // Started moving
+        if (!IsMoving
+            && Rigidbody2D.velocity.x != 0.0f)
+        {
+            IsMoving = true;
+            OnMoveStart?.Invoke(this);
+        }
+
+        // Stopped moving
+        if (IsMoving
+            && Rigidbody2D.velocity.x == 0.0f)
+        {
+            IsMoving = false;
+            OnMoveStop?.Invoke(this);
+        }
     }
 
     private void DebugDrawCollisions()

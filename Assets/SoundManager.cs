@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public enum Music
+    public enum ShooterMusic
     {
         Music,
 
         Count
     }
 
-    public enum Sfx
+    public enum PlatformerMusic
+    {
+        Music,
+
+        Count
+    }
+
+    public enum ShooterSfx
     {
         Explosion,
         Hit,
@@ -24,6 +31,15 @@ public class SoundManager : MonoBehaviour
         Count
     };
 
+    public enum PlatformerSfx
+    {
+        Jump,
+
+        Count
+    };
+
+
+
     public AudioClip[] MusicAudioClips;
     public AudioClip[] SfxAudioClips;
 
@@ -33,11 +49,11 @@ public class SoundManager : MonoBehaviour
     public void Awake()
     {
         // https://docs.unity3d.com/ScriptReference/Resources.html
-        MusicAudioClips = Resources.LoadAll<AudioClip>("shooter/audio/music");
-        Debug.Assert((int)Music.Count == MusicAudioClips.Length, "SoundManager : Music enum length (" + (int)Music.Count + ") does not match Resources folder (" + MusicAudioClips.Length + ")");
+        MusicAudioClips = Resources.LoadAll<AudioClip>("platformer/audio/music");
+        Debug.Assert((int)PlatformerMusic.Count == MusicAudioClips.Length, "SoundManager : Music enum length (" + (int)PlatformerMusic.Count + ") does not match Resources folder (" + MusicAudioClips.Length + ")");
 
-        SfxAudioClips = Resources.LoadAll<AudioClip>("shooter/audio/sfx");
-        Debug.Assert((int)Sfx.Count == SfxAudioClips.Length, "SoundManager : Sfx enum length " + (int)Sfx.Count + ") does not match Resources folder (" + SfxAudioClips.Length + ")");
+        SfxAudioClips = Resources.LoadAll<AudioClip>("platformer/audio/sfx");
+        Debug.Assert((int)PlatformerSfx.Count == SfxAudioClips.Length, "SoundManager : Sfx enum length " + (int)PlatformerSfx.Count + ") does not match Resources folder (" + SfxAudioClips.Length + ")");
 
         // https://docs.unity3d.com/ScriptReference/GameObject.AddComponent.html
         MusicAudioSource = gameObject.AddComponent<AudioSource>();
@@ -45,13 +61,24 @@ public class SoundManager : MonoBehaviour
         MusicAudioSource.volume = 0.08f;
     }
 
-    public void Play(Music music)
+    public void Play(ShooterMusic music)
     {
         MusicAudioSource.clip = MusicAudioClips[(int)music];
         MusicAudioSource.Play();
     }
 
-    public void Play(Sfx sfx)
+    public void Play(ShooterSfx sfx)
+    {
+        AudioSource.PlayClipAtPoint(SfxAudioClips[(int)sfx], transform.position);
+    }
+
+    public void PlatformerPlay(PlatformerMusic music)
+    {
+        MusicAudioSource.clip = MusicAudioClips[(int)music];
+        MusicAudioSource.Play();
+    }
+
+    public void PlatformerPlay(PlatformerSfx sfx)
     {
         AudioSource.PlayClipAtPoint(SfxAudioClips[(int)sfx], transform.position);
     }

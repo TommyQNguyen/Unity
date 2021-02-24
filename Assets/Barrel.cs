@@ -24,8 +24,8 @@ public class Barrel : MonoBehaviour
     private void OnDeath(Health health)
     {
         Destroy(gameObject);
-        GameManager.Instance.PrefabManager.Spawn(PrefabManager.Global.Explosion, transform.position, Quaternion.identity);
-        GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Explosion);
+        GameManager.Instance.PrefabManager.Spawn(PrefabManager.ShooterGlobal.Explosion, transform.position, Quaternion.identity);
+        GameManager.Instance.SoundManager.Play(SoundManager.ShooterSfx.Explosion);
 
         var bulletRotation1 = transform.rotation * Quaternion.Euler(0, 0, 0);
         var bulletRotation2 = transform.rotation * Quaternion.Euler(45, 0, -45);

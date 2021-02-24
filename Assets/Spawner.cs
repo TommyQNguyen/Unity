@@ -24,7 +24,7 @@ public class Spawner : MonoBehaviour
     {
         Destroy(gameObject);
         Player.Score.ScoreNumber = Player.Score.ScoreNumber + 500;
-        GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Explosion);
+        GameManager.Instance.SoundManager.Play(SoundManager.ShooterSfx.Explosion);
     }
 
     void SpawnMonster()

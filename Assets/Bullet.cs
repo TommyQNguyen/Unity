@@ -47,7 +47,7 @@ public class Bullet : MonoBehaviour
             Player.Score.ScoreNumber = Player.Score.ScoreNumber + 25;
             //Destroy(gameObject); // C'est probablement repetitif etant donne que 
             // la methode .onBulletCollision le fait deja
-            GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Hit);
+            GameManager.Instance.SoundManager.Play(SoundManager.ShooterSfx.Hit);
         }
 
         var spawner = collision2D.gameObject.GetComponent<Spawner>();
@@ -57,7 +57,7 @@ public class Bullet : MonoBehaviour
             Instantiate(Explosion, transform.position, Quaternion.identity);
             Player.Score.ScoreNumber = Player.Score.ScoreNumber + 25;
 
-            GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Hit);
+            GameManager.Instance.SoundManager.Play(SoundManager.ShooterSfx.Hit);
         }
 
 
@@ -68,7 +68,7 @@ public class Bullet : MonoBehaviour
             Instantiate(Explosion, transform.position, Quaternion.identity);
             //Destroy(gameObject);
 
-            GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Hit);
+            GameManager.Instance.SoundManager.Play(SoundManager.ShooterSfx.Hit);
         }
     }
 }

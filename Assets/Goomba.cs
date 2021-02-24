@@ -26,7 +26,7 @@ public class Goomba : MonoBehaviour
     private void OnWall(PlatformController platformController)
     {
         PlatformController.FacingController.Flip();
-        PlatformController.InputMove = PlatformController.FacingController.Direction;
+        //PlatformController.InputMove = PlatformController.FacingController.Direction;
     }
 
     // Update is called once per frame

@@ -24,8 +24,8 @@ public class Bomb : MonoBehaviour
     void OnExplode()
     {
         Destroy(gameObject);
-        GameManager.Instance.PrefabManager.Spawn(PrefabManager.Global.Bomb, transform.position, Quaternion.identity);
-        GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Explosion);
+        GameManager.Instance.PrefabManager.Spawn(PrefabManager.ShooterGlobal.Bomb, transform.position, Quaternion.identity);
+        GameManager.Instance.SoundManager.Play(SoundManager.ShooterSfx.Explosion);
 
         var bulletRotation1 = transform.rotation * Quaternion.Euler(0, 0, 0);
         var bulletRotation2 = transform.rotation * Quaternion.Euler(45, 0, -45);

@@ -2,7 +2,14 @@
 
 public class PrefabManager : MonoBehaviour
 {
-    public enum Global
+    public enum PlatformerGlobal
+    {
+        Goomba,
+        Mario,
+
+        Count,
+    }
+    public enum ShooterGlobal
     {
         Barrel,
         Bomb,
@@ -28,37 +35,60 @@ public class PrefabManager : MonoBehaviour
     //    Count
     //}
 
-    public GameObject[] GlobalGameObjects;
+    public GameObject[] PlatformerGlobalGameObjects;
+    public GameObject[] ShooterGlobalGameObjects;
     //public GameObject[] VfxGameObjects;
 
     private void Awake()
     {
-        GlobalGameObjects = Resources.LoadAll<GameObject>("shooter/prefabs/global");
-        Debug.Assert((int)Global.Count == GlobalGameObjects.Length,
-            "PrefabManager : Global enum length (" + (int)Global.Count + ") does not match Resources folder (" + GlobalGameObjects.Length + ")");
+        PlatformerGlobalGameObjects = Resources.LoadAll<GameObject>("platformer/prefabs/global");
+        Debug.Assert((int)PlatformerGlobal.Count == PlatformerGlobalGameObjects.Length,
+            "PrefabManager : Global enum length (" + (int)PlatformerGlobal.Count + ") does not match Resources folder (" + PlatformerGlobalGameObjects.Length + ")");
 
         //VfxGameObjects = Resources.LoadAll<GameObject>("shooter/prefabs/vfx");
         //Debug.Assert((int)Vfx.Count == VfxGameObjects.Length, "PrefabManager : Vfx enum length (" + (int)Vfx.Count + ") does not match Resources folder (" + VfxGameObjects.Length + ")");
     }
 
-    public GameObject Spawn(Global global, Transform parent)
+    public GameObject Spawn(ShooterGlobal global, Transform parent)
     {
-        return Instantiate(GlobalGameObjects[(int)global], parent);
+        return Instantiate(ShooterGlobalGameObjects[(int)global], parent);
     }
 
-    public GameObject Spawn(Global global, Vector3 position)
+    public GameObject Spawn(ShooterGlobal global, Vector3 position)
     {
-        return Instantiate(GlobalGameObjects[(int)global], position, Quaternion.identity);
+        return Instantiate(ShooterGlobalGameObjects[(int)global], position, Quaternion.identity);
     }
 
-    public GameObject Spawn(Global global, Vector3 position, Vector3 rotation)
+    public GameObject Spawn(ShooterGlobal global, Vector3 position, Vector3 rotation)
     {
-        return Instantiate(GlobalGameObjects[(int)global], position, Quaternion.Euler(rotation));
+        return Instantiate(ShooterGlobalGameObjects[(int)global], position, Quaternion.Euler(rotation));
     }
 
-    public GameObject Spawn(Global global, Vector3 position, Quaternion rotation)
+    public GameObject Spawn(ShooterGlobal global, Vector3 position, Quaternion rotation)
     {
-        return Instantiate(GlobalGameObjects[(int)global], position, rotation);
+        return Instantiate(ShooterGlobalGameObjects[(int)global], position, rotation);
+    }
+
+    // Spawn pour Platformer
+
+    public GameObject PlatformerSpawn(PlatformerGlobal global, Transform parent)
+    {
+        return Instantiate(PlatformerGlobalGameObjects[(int)global], parent);
+    }
+
+    public GameObject PlatformerSpawn(PlatformerGlobal global, Vector3 position)
+    {
+        return Instantiate(PlatformerGlobalGameObjects[(int)global], position, Quaternion.identity);
+    }
+
+    public GameObject PlatformerSpawn(PlatformerGlobal global, Vector3 position, Vector3 rotation)
+    {
+        return Instantiate(PlatformerGlobalGameObjects[(int)global], position, Quaternion.Euler(rotation));
+    }
+
+    public GameObject PlatformerSpawn(PlatformerGlobal global, Vector3 position, Quaternion rotation)
+    {
+        return Instantiate(PlatformerGlobalGameObjects[(int)global], position, rotation);
     }
 
     //public GameObject Spawn(Vfx vfx, Transform parent)

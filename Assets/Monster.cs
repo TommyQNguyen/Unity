@@ -41,7 +41,7 @@ public class Monster : MonoBehaviour
             //Debug.Log("Enemy is dead");
             Destroy(gameObject);
 
-            GameManager.Instance.SoundManager.Play(SoundManager.Sfx.Explosion);
+            GameManager.Instance.SoundManager.Play(SoundManager.ShooterSfx.Explosion);
         }
 
         //Debug.Log("Enemy Health: " + Health);
