@@ -106,7 +106,12 @@ public class Mario : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        Debug.Log("OnTriggerStay2D");
+        //Debug.Log("OnTriggerStay2D: " + collision.gameObject.name);
+
+        if (collision.gameObject.name == "SpikesHitbox")
+        {
+            Health.Value -= 1;
+        }
 
 
         var health = collision.GetComponentInParent<Health>();
@@ -124,6 +129,7 @@ public class Mario : MonoBehaviour
                 health.Value -= 1;
 
                 PlatformController.Jump();
+                GameManager.Instance.SoundManager.PlatformerPlay(SoundManager.PlatformerSfx.Stomp);
             }
             else
             {
@@ -138,6 +144,8 @@ public class Mario : MonoBehaviour
 
 
     }
+
+
 
 
 }
