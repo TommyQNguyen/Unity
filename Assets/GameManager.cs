@@ -53,12 +53,13 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
         OnSceneLoaded();
-        Camera = FindObjectOfType<Camera>();
+        
     }
 
     private void OnSceneLoaded()
     {
         Player = FindObjectOfType<Player>();
+        Camera = FindObjectOfType<Camera>();
     }
 
     public void RestartLevel()
