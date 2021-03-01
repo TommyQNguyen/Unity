@@ -43,9 +43,7 @@ public class KoopaWings : MonoBehaviour
     private void OnDeath(Health health)
     {
         Destroy(gameObject);
-
-        // Pour spawner un Shell a la mort du Koopa
-        //GameManager.Instance.PrefabManager.PlatformerSpawn(PrefabManager.PlatformerGlobal.Goomba, transform.position);
+        GameManager.Instance.PrefabManager.PlatformerSpawn(PrefabManager.PlatformerGlobal.Shell, transform.position);
     }
 
     private void Koopa_Fly()

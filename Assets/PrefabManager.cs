@@ -8,6 +8,7 @@ public class PrefabManager : MonoBehaviour
         Goomba,
         KoopaWings,
         Mario,
+        Shell,
 
         Count,
     }
