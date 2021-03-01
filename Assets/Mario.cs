@@ -94,7 +94,7 @@ public class Mario : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlatformController.InputJump = Input.GetButtonDown("Jump");
+        PlatformController.InputJump |= Input.GetButtonDown("Jump");
         PlatformController.InputMove = Input.GetAxisRaw("Horizontal");
 
         if (Animator.GetCurrentAnimatorStateInfo(0).IsName("Mario_Run"))
@@ -104,18 +104,19 @@ public class Mario : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTrigger(Collider2D collision)
     {
-        //Debug.Log("OnTriggerStay2D: " + collision.gameObject.name);
+        //Debug.Log("OnTrigger: " + collision.gameObject.name);
 
+        
+        // A changer pour mettre dans mon script Spike si j'ai le temps
         if (collision.gameObject.name == "SpikesHitbox")
         {
             Health.Value -= 1;
         }
 
-
         var health = collision.GetComponentInParent<Health>();
-        if (health)
+        if (health && health.CanBeDamaged)
         {
             Debug.Log("OnTriggerStay2D Health");
 
@@ -137,15 +138,15 @@ public class Mario : MonoBehaviour
                 Health.Value -= 1;
             }
         }
-
-
-
-
-
-
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        OnTrigger(collision);
+    }
 
-
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        OnTrigger(collision);
+    }
 }

@@ -35,6 +35,7 @@ public class SoundManager : MonoBehaviour
     {
         Jump,
         Stomp,
+        Thwomp,
 
         Count
     };

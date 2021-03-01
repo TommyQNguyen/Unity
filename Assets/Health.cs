@@ -20,6 +20,8 @@ public class Health : MonoBehaviour
     public int Max;
 
     private int _value;
+    public float InvincibilityTime = 0.1f;
+    public float InvincibilityTimer { get; private set; }
 
     public int Value
     {
@@ -35,7 +37,10 @@ public class Health : MonoBehaviour
                 OnChanged?.Invoke(this);
 
                 if (_value < previous)
+                {
+                    InvincibilityTimer = InvincibilityTime;
                     OnHit?.Invoke(this);
+                }
 
                 if (_value <= 0)
                     OnDeath?.Invoke(this);
@@ -46,5 +51,18 @@ public class Health : MonoBehaviour
     private void Awake()
     {
         Value = Max;
+    }
+
+    public bool CanBeDamaged
+    {
+        get
+        {
+            return InvincibilityTimer <= 0.0f;
+        }
+    }
+
+    private void Update()
+    {
+        InvincibilityTimer -= Time.deltaTime;
     }
 }

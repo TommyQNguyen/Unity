@@ -18,7 +18,6 @@ public class KoopaWings : MonoBehaviour
         PlatformController.OnLand += OnLand;
 
         Health = GetComponent<Health>();
-        //Health.OnDeath += OnDeath;
         Health.OnHit += OnHit;
         Health.OnDeath += OnDeath;
 
