@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
 
     public Player Player { get; private set; }
 
+    public Mario Mario { get; private set; }
+
     public Level Level {get; private set; }
 
     public Plane[] FrustumPlanes { get; private set; }
@@ -59,6 +61,7 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoaded()
     {
         Player = FindObjectOfType<Player>();
+        Mario = FindObjectOfType<Mario>();
         Camera = FindObjectOfType<Camera>();
     }
 

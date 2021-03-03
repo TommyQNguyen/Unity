@@ -9,7 +9,7 @@ public class BulletBill : MonoBehaviour
     public Health Health { get; private set; }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         PlatformController = GetComponent<PlatformController>();
         PlatformController.OnWall += OnWall;
@@ -32,5 +32,6 @@ public class BulletBill : MonoBehaviour
     void Update()
     {
         PlatformController.InputMove = PlatformController.FacingController.Direction;
+
     }
 }

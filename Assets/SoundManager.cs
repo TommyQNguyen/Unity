@@ -13,6 +13,7 @@ public class SoundManager : MonoBehaviour
 
     public enum PlatformerMusic
     {
+
         Music,
 
         Count

@@ -6,12 +6,96 @@ using UnityEngine.SceneManagement;
 
 public class Mario : MonoBehaviour
 {
+    public enum State
+    {
+        Small,
+        Big,
+        Fire
+    }
+
+    public enum Animation
+    {
+        Idle,
+        Run,
+        Jump,
+        Dead
+    }
+
+    private State _currentState;
+
+    public State CurrentState
+    {
+        get { return _currentState; }
+        set 
+        {
+            _currentState = value;
+
+
+
+            // A faire:
+            // Dead = 0
+            // Small = 1 point de vie
+
+            // Big
+            // Fire = 2 points de vie
+
+            // Eventuellement creer  le OnHit pour gerer
+            switch (CurrentState)
+            {
+                case State.Small:
+                    Health.Value = 1;
+                    break;
+                case State.Big:
+                    Health.Value = 2;
+                    break;
+                case State.Fire:
+                    Health.Value = 2;
+                    break;
+            }
+
+
+            UpdateAnimation();
+        }
+    }
+
+    private Animation _currentAnimation;
+    public Animation CurrentAnimation
+    {
+        get { return _currentAnimation; }
+        set
+        {
+            _currentAnimation = value;
+            UpdateAnimation();
+        }
+    }
+
+    private void UpdateAnimation()
+    {
+        var animationName = AnimationName;
+        Animator.Play(animationName);
+    }
+
+    public string AnimationName
+    {
+        get
+        {
+            if (CurrentAnimation == Animation.Dead)
+                return "Mario_Small_Dead";
+
+            var prefix = CurrentState.ToString();
+            var suffix = CurrentAnimation.ToString();
+
+            return "Mario_" + prefix + "_" + suffix;
+        }
+    }
+
     public Vector2 RunAnimationSpeed;
 
     public PlatformController PlatformController { get; private set; }
     
     public Animator Animator { get; private set; }
     public Health Health { get; private set; }
+    
 
     // Start is called before the first frame update
     void Awake()
@@ -28,43 +112,40 @@ public class Mario : MonoBehaviour
         Health.OnDeath += OnDeath;
     }
 
+    private void Start()
+    {
+        CurrentState = State.Small;
+    }
+
     private void OnDeath(Health health)
     {
-        
+        CurrentAnimation = Animation.Dead;
 
-        // A faire
-        // Animator.Play("Mario_Dead");
-
-        // Attendre 3 secondes
-        // Empecher bouger
-        //PlatformController.enabled = false;
-        //PlatformController.BoxCollider2D.enabled = false;
-        //PlatformController.Rigidbody2D.simulated = false; // Decocher le RigidBody
-
-        Destroy(gameObject);
-
+        PlatformController.enabled = false;
+        PlatformController.BoxCollider2D.enabled = false;
+        PlatformController.Rigidbody2D.simulated = false; // Decocher le RigidBody
 
         // Restart level
+        // Attendre 3 secondes
+        // Empecher bouger
         GameManager.Instance.Invoke(nameof(GameManager.RestartLevel), 3.0f);
-        
     }
 
     
-
     private void OnFall(PlatformController platformController)
     {
-        Animator.Play("Mario_Jump");
+        CurrentAnimation = Animation.Jump;
     }
 
     private void OnLand(PlatformController platformController)
     {
         if (PlatformController.IsMoving)
         {
-            Animator.Play("Mario_Run");
+            CurrentAnimation = Animation.Run;
         }
         else
         {
-            Animator.Play("Mario_Idle");
+            CurrentAnimation = Animation.Idle;
         }
     }
 
@@ -72,7 +153,7 @@ public class Mario : MonoBehaviour
     {
         if (PlatformController.IsGrounded)
         {
-            Animator.Play("Mario_Idle");
+            CurrentAnimation = Animation.Idle;
         }
 
     }
@@ -81,13 +162,13 @@ public class Mario : MonoBehaviour
     {
         if (PlatformController.IsGrounded)
         {
-            Animator.Play("Mario_Run");
+            CurrentAnimation = Animation.Run;
         }
     }
 
     private void OnJump(PlatformController platformController)
     {
-        Animator.Play("Mario_Jump");
+        CurrentAnimation = Animation.Jump;
         GameManager.Instance.SoundManager.PlatformerPlay(SoundManager.PlatformerSfx.Jump);
     }
 
@@ -97,11 +178,32 @@ public class Mario : MonoBehaviour
         PlatformController.InputJump |= Input.GetButtonDown("Jump");
         PlatformController.InputMove = Input.GetAxisRaw("Horizontal");
 
-        if (Animator.GetCurrentAnimatorStateInfo(0).IsName("Mario_Run"))
+        if (CurrentAnimation == Animation.Run)
         {
             var speedRatio = Mathf.Abs(PlatformController.CurrentSpeed / PlatformController.MoveSpeed);
             Animator.speed = RunAnimationSpeed.Lerp(speedRatio);
         }
+        else
+        {
+            Animator.speed = 1.0f;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            CurrentState = State.Small;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            CurrentState = State.Big;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            CurrentState = State.Fire;
+        }
+
+
     }
 
     private void OnTrigger(Collider2D collision)

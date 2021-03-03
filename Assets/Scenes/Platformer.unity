@@ -1210,6 +1210,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mario
       objectReference: {fileID: 0}
+    - target: {fileID: 5914098394772698427, guid: cf99d30d7014ab946a4ff65c27dc8311,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 8bc7df8a538045a4aafbf1f0c91508c3, type: 2}
     - target: {fileID: 5914098394772698431, guid: cf99d30d7014ab946a4ff65c27dc8311,
         type: 3}
       propertyPath: m_IsTrigger
