@@ -25,5 +25,19 @@ public class Mushroom : MonoBehaviour
         PlatformController.InputMove = PlatformController.FacingController.Direction;
     }
 
-    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        var mario = collision.GetComponent<Mario>();
+        var health = collision.GetComponentInParent<Health>();
+
+        if (mario && health.Value < 2)
+        {
+            Destroy(gameObject);
+            mario.CurrentState = Mario.State.Big;
+            health.Value += 1;
+            GameManager.Instance.SoundManager.PlatformerPlay(SoundManager.PlatformerSfx.Item);
+            Debug.Log("Mario current Health: " + health.Value);
+        }
+        
+    }
 }

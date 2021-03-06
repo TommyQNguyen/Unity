@@ -109,7 +109,18 @@ public class Mario : MonoBehaviour
 
         Animator = GetComponent<Animator>();
         Health = GetComponent<Health>();
+        Health.OnHit += OnHit;
         Health.OnDeath += OnDeath;
+
+        GameManager.Instance.SoundManager.PlatformerPlay(SoundManager.PlatformerMusic.Music);
+    }
+
+    private void OnHit(Health health)
+    {
+        if (CurrentState == State.Big || CurrentState == State.Fire)
+        {
+            CurrentState = State.Small;
+        }
     }
 
     private void Start()
@@ -155,7 +166,6 @@ public class Mario : MonoBehaviour
         {
             CurrentAnimation = Animation.Idle;
         }
-
     }
 
     private void OnMoveStart(PlatformController platformController)
@@ -237,7 +247,11 @@ public class Mario : MonoBehaviour
             else
             {
                 // Goomba gagne
-                Health.Value -= 1;
+                if (Health.CanBeDamaged)
+                { 
+                    Health.Value -= 1;
+                    Debug.Log("Enemy hit Mario, current Mario HP: " + Health.Value);
+                }
             }
         }
     }
