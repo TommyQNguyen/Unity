@@ -5,11 +5,20 @@ using UnityEngine;
 public class Fireball : MonoBehaviour
 {
     public PlatformController PlatformController { get; private set; }
+    public Animator Animator { get; private set; }
 
     void Awake()
     {
         PlatformController = GetComponent<PlatformController>();
         PlatformController.OnWall += OnWall;
+        PlatformController.OnMoveStart += OnMoveStart;
+
+        Animator = GetComponent<Animator>();
+    }
+
+    private void OnMoveStart(PlatformController platformController)
+    {
+        Animator.Play("Fireball");
     }
 
     private void OnWall(PlatformController platformController)
