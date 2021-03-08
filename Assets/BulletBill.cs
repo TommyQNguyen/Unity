@@ -20,6 +20,7 @@ public class BulletBill : MonoBehaviour
 
     private void OnWall(PlatformController platformController)
     {
+        GameManager.Instance.PrefabManager.PlatformerSpawn(PrefabManager.PlatformerGlobal.Smoke, transform.position);
         Destroy(gameObject);
     }
 

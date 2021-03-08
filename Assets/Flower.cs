@@ -27,6 +27,7 @@ public class Flower : MonoBehaviour
             mario.CurrentState = Mario.State.Fire;
             health.Value += 1;
             GameManager.Instance.SoundManager.PlatformerPlay(SoundManager.PlatformerSfx.Item);
+            GameManager.Instance.SoundManager.PlatformerPlay(SoundManager.PlatformerSfx.Powerup);
             Debug.Log("Mario current Health: " + health.Value);
         }
 

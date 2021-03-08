@@ -43,6 +43,7 @@ public class KoopaWings : MonoBehaviour
     private void OnDeath(Health health)
     {
         Destroy(gameObject);
+        GameManager.Instance.PrefabManager.PlatformerSpawn(PrefabManager.PlatformerGlobal.Smoke, transform.position);
         GameManager.Instance.PrefabManager.PlatformerSpawn(PrefabManager.PlatformerGlobal.Shell, transform.position);
     }
 

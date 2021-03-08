@@ -240,6 +240,7 @@ public class Mario : MonoBehaviour
         if (collision.gameObject.name == "SpikesHitbox")
         {
             Health.Value -= 1;
+            GameManager.Instance.SoundManager.PlatformerPlay(SoundManager.PlatformerSfx.Hit);
         }
 
         var health = collision.GetComponentInParent<Health>();
@@ -266,6 +267,7 @@ public class Mario : MonoBehaviour
                 { 
                     Health.Value -= 1;
                     Debug.Log("Enemy hit Mario, current Mario HP: " + Health.Value);
+                    GameManager.Instance.SoundManager.PlatformerPlay(SoundManager.PlatformerSfx.Hit);
                 }
             }
         }

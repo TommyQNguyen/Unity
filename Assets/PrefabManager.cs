@@ -11,6 +11,7 @@ public class PrefabManager : MonoBehaviour
         Mario,
         Mushroom,
         Shell,
+        Smoke,
 
         Count,
     }

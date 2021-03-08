@@ -33,6 +33,7 @@ public class Goomba : MonoBehaviour
 
     private void OnDeath(Health health)
     {
+        GameManager.Instance.PrefabManager.PlatformerSpawn(PrefabManager.PlatformerGlobal.Smoke, transform.position);
         Destroy(gameObject);
     }
 

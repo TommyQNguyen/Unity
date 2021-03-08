@@ -23,6 +23,7 @@ public class Fireball : MonoBehaviour
 
     private void OnWall(PlatformController platformController)
     {
+        GameManager.Instance.PrefabManager.PlatformerSpawn(PrefabManager.PlatformerGlobal.Smoke, transform.position);
         Destroy(gameObject);
     }
 
@@ -32,8 +33,6 @@ public class Fireball : MonoBehaviour
         PlatformController.InputMove = PlatformController.FacingController.Direction;
         PlatformController.InputJump = true;
 
-        var speedRatio = PlatformController.CurrentSpeed / PlatformController.MoveSpeed;
-        //Animator.speed = RunAnimationSpeed.Lerp(speedRatio);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -45,6 +44,7 @@ public class Fireball : MonoBehaviour
         {
             health.Value -= 1;
             Destroy(gameObject);
+            GameManager.Instance.PrefabManager.PlatformerSpawn(PrefabManager.PlatformerGlobal.Smoke, transform.position);
             GameManager.Instance.SoundManager.PlatformerPlay(SoundManager.PlatformerSfx.Kick);
         }
     }
