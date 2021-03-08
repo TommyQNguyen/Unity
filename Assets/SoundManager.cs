@@ -34,6 +34,7 @@ public class SoundManager : MonoBehaviour
 
     public enum PlatformerSfx
     {
+        Fireball,
         Item,
         Jump,
         Kick,

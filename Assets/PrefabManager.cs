@@ -5,9 +5,11 @@ public class PrefabManager : MonoBehaviour
     public enum PlatformerGlobal
     {
         Bullet_Bill,
+        Fireball,
         Goomba,
         KoopaWings,
         Mario,
+        Mushroom,
         Shell,
 
         Count,

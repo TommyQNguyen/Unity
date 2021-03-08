@@ -212,8 +212,23 @@ public class Mario : MonoBehaviour
         {
             CurrentState = State.Fire;
         }
+        else if (Input.GetButtonDown("Fire2"))
+        {
+            if (CurrentState == State.Fire)
+            {
+                var fireballGameObject = GameManager.Instance.PrefabManager.PlatformerSpawn(PrefabManager.PlatformerGlobal.Fireball, transform.position);
+                var fireball = fireballGameObject.GetComponent<Fireball>();
 
+                var marioCurrentFacing = this.PlatformController.FacingController.Facing;
+                var fireballCurrentFacing = fireball.PlatformController.FacingController.Facing;
 
+                if (marioCurrentFacing != fireballCurrentFacing)
+                {
+                    fireball.PlatformController.FacingController.Flip();
+                }
+                GameManager.Instance.SoundManager.PlatformerPlay(SoundManager.PlatformerSfx.Fireball);
+            }   
+        }
     }
 
     private void OnTrigger(Collider2D collision)
