@@ -44,8 +44,9 @@ public class PlatformController : MonoBehaviour
 
     private int _layerMask;
 
-    public bool InputJump { get; set; } // true ButtonDown
-    public float InputMove { get; set; } // -1, 1 AxisRaw
+    // Send a value to these Input every Update to use PlatformController
+    public bool InputJump { get; set; }
+    public float InputMove { get; set; }
 
     public BoxCollider2D BoxCollider2D { get; private set; }
     public Rigidbody2D Rigidbody2D { get; private set; }
@@ -77,6 +78,28 @@ public class PlatformController : MonoBehaviour
     }
 
     private float JumpDelayTimer { get; set; }
+    private bool JumpForcePending { get; set; }
+
+    public void Reset()
+    {
+        InputJump = false;
+        InputMove = 0;
+
+        IsGrounded = false;
+        IsWalled = false;
+        IsWalledLeft = false;
+        IsWalledRight = false;
+        IsCeiling = false;
+        IsJumping = false;
+        IsFalling = false;
+        IsMoving = false;
+
+        JumpsRemaining = Jumps;
+        JumpDelayTimer = 0;
+        JumpForcePending = false;
+
+        Rigidbody2D.velocity = Vector2.zero;
+    }
 
     public void ResetJumpsRemaining()
     {
@@ -85,6 +108,13 @@ public class PlatformController : MonoBehaviour
 
     public void Jump()
     {
+        // Prevent jumping too high by sending multiple Jumps before physics has time to process the AddForce request
+        // Setting velocity to 0 does not fix this as jumps have not been added to velocity yet
+        if (JumpForcePending)
+            return;
+
+        JumpForcePending = true;
+
         // Cancel previous fall momentum on jump
         Rigidbody2D.velocity = Rigidbody2D.velocity.WithY(0);
 
@@ -190,6 +220,8 @@ public class PlatformController : MonoBehaviour
 
     private void UpdateJump()
     {
+        JumpForcePending = false;
+
         if (!InputJump)
             return;
 

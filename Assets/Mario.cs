@@ -126,6 +126,7 @@ public class Mario : MonoBehaviour
     private void Start()
     {
         CurrentState = State.Small;
+        OnLevelRestart();
     }
 
     private void OnDeath(Health health)
@@ -180,6 +181,24 @@ public class Mario : MonoBehaviour
     {
         CurrentAnimation = Animation.Jump;
         GameManager.Instance.SoundManager.PlatformerPlay(SoundManager.PlatformerSfx.Jump);
+    }
+
+    public void OnLevelStart(LevelEntrance levelEntrance)
+    {
+        if (levelEntrance != null)
+        {
+            transform.position = levelEntrance.transform.position;
+        }
+        else
+        {
+            transform.position = Vector3.zero;
+        }
+
+        PlatformController.Reset();
+    }
+    public void OnLevelRestart()
+    {
+        CurrentState = State.Small;
     }
 
     // Update is called once per frame

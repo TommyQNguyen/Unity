@@ -166,6 +166,7 @@ MonoBehaviour:
   AirMoveSpeedMultiplier: 1
   JumpStrength: 125
   Jumps: 1
+  JumpDelay: 0.05
 --- !u!114 &5914098394772698430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,7 +190,7 @@ Animator:
   m_GameObject: {fileID: 5914098394772698371}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 65800483fbde73a4caa1c8d937b12e5e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 8bc7df8a538045a4aafbf1f0c91508c3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -210,4 +211,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b34a437484cd91d498cdee04024ff9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Max: 1
+  Max: 2
+  InvincibilityTime: 1
